@@ -1,11 +1,32 @@
 # Nave.ozati.co - Apache / LiteSpeed Performance & Security Rules
 
-# 1. Compressão Gzip & Brotli
+# 0. Prioridade Absoluta para index.html (ignora default.php padrão da Hostinger)
+DirectoryIndex index.html index.php
+
+# Regras de URL limpa (permite acessar /chat direto para chat.html)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
+
+# 1. Desativar Cache para HTML (Atualização Imediata no Navegador)
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
+</IfModule>
+
+# 2. Compressão Gzip & Brotli
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json image/svg+xml
 </IfModule>
 
-# 2. Cache headers para máximo desempenho
+# 3. Cache headers para ativos estáticos imutáveis
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault "access plus 1 month"
@@ -16,14 +37,13 @@
   ExpiresByType application/x-msdownload "access plus 1 month"
 </IfModule>
 
-# 3. Cabeçalhos de Segurança
+# 4. Cabeçalhos de Segurança
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set X-XSS-Protection "1; mode=block"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
 
-# 4. Forçar UTF-8
+# 5. Forçar UTF-8
 AddDefaultCharset UTF-8
