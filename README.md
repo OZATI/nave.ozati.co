@@ -1,22 +1,28 @@
-# nave.ozati.co
+# nave.ozati.co — Nave AI
 
-Landing page oficial e distribuição do navegador desktop **Nave** do ecossistema **OZATI**.
+Plataforma oficial do **Nave AI**: a camada de interface e conexão entre o usuário e as IAs + APIs que ele já utiliza.
 
-## 🌐 Endereço Oficial
-- [https://nave.ozati.co](https://nave.ozati.co)
+## Endereços Oficiais
+- **Landing Page**: [https://nave.ozati.co](https://nave.ozati.co)
+- **Nave Chat (Web App)**: [https://nave.ozati.co/chat.html](https://nave.ozati.co/chat.html)
+- **Shader WebGL (Demo isolada)**: [https://nave.ozati.co/wave.html](https://nave.ozati.co/wave.html)
+- **Nave Agent Embed SDK**: [https://nave.ozati.co/agent.js](https://nave.ozati.co/agent.js)
 
-## 📁 Estrutura do Repositório
-- `index.html`: Landing page ultra rápida, sem dependências externas bloqueantes, otimizada para Core Web Vitals (100/100).
-- `nave.svg`: Logotipo oficial vetorial do Nave.
-- `favicon.svg` & `favicon.ico`: Ícones de aba e favoritos.
-- `.htaccess`: Regras de compressão Gzip/Brotli, cache headers e segurança para servidores Hostinger / LiteSpeed / Apache.
+## Arquitetura dos 3 Produtos
+1. **Nave Chat**: Interface web de alta velocidade para múltiplos modelos (Claude 3.5 Sonnet, GPT-4o, DeepSeek R1, Llama 3.3, Gemini) via BYOK OpenRouter.
+2. **Nave Extension**: Extensão de navegador (Side Panel) contextual para leitura de sistemas parceiros (ex: Clinic Kiosk, ERPs, CRMs).
+3. **Nave Connect**: Camada de integração corporativa entre APIs de clientes, webhooks e provedores de IA sem cobrança de markup sobre tokens.
 
-## 🚀 Integração com Hostinger Git
-1. No painel da Hostinger (**hPanel**), acesse o gerenciamento do domínio `ozati.co`.
-2. Vá em **Avançado > Git**.
-3. **Repositório**: `https://github.com/OZATI/nave.ozati.co.git`
-4. **Branch**: `main`
-5. **Diretório de instalação**: `/public_html/nave`
-   *(Importante: o subdomínio nave.ozati.co aponta para `/home/u879659065/domains/ozati.co/public_html/nave`)*
-6. Clique em **Criar / Implementar**.
-7. *(Se necessário)*: Pelo **Gerenciador de Arquivos**, entre na pasta `public_html/nave` e remova o arquivo padrão `default.php` para que o `index.html` assuma imediatamente.
+## Estrutura de Arquivos
+- `index.html`: Landing page minimalista dark brutalist (SpaceX/Linear style) com shader WebGL de aberração cromática procedural nativo em GLSL.
+- `chat.html`: Aplicação de chat funcional com streaming SSE, suporte a microfone (Web Speech API), BYOK e modo demonstração.
+- `agent.js`: SDK encapsulado em Shadow DOM para incorporar o assistente em qualquer site via `<script>`.
+- `wave-background.js` & `wave.html`: Shader de ondas senoidais com aberração cromática a 60 FPS sem dependências pesadas.
+- `.htaccess`: Regras de cache, compactação Brotli/Gzip e cabeçalhos de segurança para LiteSpeed/Hostinger.
+
+## Deploy no Hostinger Git
+1. No painel da Hostinger (**hPanel**), acesse **Avançado > Git**.
+2. **Repositório**: `https://github.com/OZATI/nave.ozati.co.git`
+3. **Branch**: `main`
+4. **Diretório**: `/public_html/nave`
+5. Clique em **Atualizar / Implementar**.

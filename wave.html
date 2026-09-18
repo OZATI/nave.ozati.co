@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nave AI — Chromatic Aberration WebGL Sine Wave</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000000;
+      color: #ffffff;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #wave-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+    .overlay-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+      max-width: 680px;
+      padding: 0 20px;
+    }
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      font-size: 16px;
+      color: #888888;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #555555;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="wave-canvas"></canvas>
+
+  <div class="overlay-content">
+    <div class="badge">Nave AI &bull; WebGL Shader</div>
+    <h1>Chromatic Aberration Sine Wave</h1>
+    <p>Ondulação senoidal procedural calculada via GLSL com dispersão cromática nos canais RGB e resposta interativa ao cursor.</p>
+    <div class="hint">[ Mova o mouse sobre a tela para deformar a onda ]</div>
+  </div>
+
+  <script type="module">
+    import { initWaveBackground } from './wave-background.js';
+    const canvas = document.getElementById('wave-canvas');
+    initWaveBackground(canvas);
+  </script>
+</body>
+</html>
