@@ -3,37 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nave — O Navegador Desktop Mais Rápido da OZATI</title>
-  <meta name="description" content="Navegador desktop ultra veloz baseado em Chromium puro, com aceleração por GPU, zero telemetria e compatibilidade total com extensões da Chrome Web Store.">
-  <meta name="theme-color" content="#08090d">
+  <title>Nave — O Navegador Desktop da OZATI</title>
+  <meta name="description" content="Navegador desktop ultra veloz baseado em Chromium puro, com aceleração por GPU, zero telemetria, busca Google nativa e compatibilidade total com extensões.">
+  <meta name="theme-color" content="#000000">
   
-  <!-- Open Graph / Redes Sociais -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nave.ozati.co/">
-  <meta property="og:title" content="Nave — O Navegador Desktop Mais Rápido da OZATI">
-  <meta property="og:description" content="Motor Chromium 151 puro. Sem processos fantasmas, sem telemetria, renderização a 120 FPS via GPU e 100% de compatibilidade com extensões.">
+  <meta property="og:title" content="Nave — O Navegador Desktop da OZATI">
+  <meta property="og:description" content="Motor Chromium 151 puro. Sem telemetria, renderização 120 FPS via GPU, busca Google nativa e atualização silenciosa.">
   <meta property="og:image" content="https://nave.ozati.co/nave.svg">
 
   <link rel="icon" type="image/svg+xml" href="/nave.svg">
   <link rel="shortcut icon" href="/favicon.ico">
 
+  <!-- Tipografia Oficial OZATI: BioRhyme (Display / Títulos) + Inter (Interface / Corpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=BioRhyme:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
-    /* Design Tokens OZATI & Nave */
     :root {
-      --bg: #07080c;
-      --bg-surface: #0e1017;
-      --bg-card: rgba(18, 21, 31, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-accent: rgba(16, 185, 129, 0.3);
-      --emerald: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.15);
-      --cyan: #06b6d4;
-      --cyan-glow: rgba(6, 182, 212, 0.12);
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --text-dim: #6b7280;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --bg: #000000;
+      --bg-surface: #0a0a0a;
+      --bg-card: #111111;
+      --border: #222222;
+      --border-subtle: #191919;
+      --border-hover: #444444;
+      --text: #ffffff;
+      --text-muted: #888888;
+      --text-dim: #555555;
+      
+      --font-display: 'BioRhyme', serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     *, *::before, *::after {
@@ -44,7 +47,8 @@
 
     html {
       scroll-behavior: smooth;
-      color-scheme: dark;
+      background-color: var(--bg);
+      color: var(--text);
     }
 
     body {
@@ -52,57 +56,30 @@
       color: var(--text);
       font-family: var(--font-sans);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
     }
 
-    /* Fundo com Malha & Luzes Atmosféricas */
-    .ambient-glow-1 {
-      position: fixed;
-      top: -150px;
-      left: 20%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--emerald-glow) 0%, rgba(16, 185, 129, 0) 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .ambient-glow-2 {
-      position: fixed;
-      top: 40%;
-      right: -100px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, var(--cyan-glow) 0%, rgba(6, 182, 212, 0) 70%);
-      filter: blur(100px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
+    /* Container Arquitetural Alinhado à Esquerda */
     .container {
       width: 100%;
-      max-width: 1160px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
+      padding: 0 32px;
     }
 
-    /* Header / Navegação */
+    /* Header Minimalista */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(7, 8, 12, 0.75);
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      transition: all 0.2s ease;
     }
 
     .nav-inner {
@@ -112,1051 +89,700 @@
       justify-content: space-between;
     }
 
-    .logo-brand {
+    .brand-lockup {
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text);
+      color: #fff;
     }
 
-    .logo-icon {
-      width: 38px;
-      height: 38px;
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+    }
+
+    .brand-names {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      align-items: baseline;
+      gap: 8px;
     }
 
-    .logo-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .brand-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .brand-tag {
-      font-size: 0.65rem;
+    .brand-ozati {
+      font-family: var(--font-sans);
       font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .brand-nave {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
       text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--emerald);
-      border: 1px solid var(--border-accent);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
-      list-style: none;
+      gap: 28px;
     }
 
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
-      transition: color 0.15s;
+      transition: color 0.15s ease;
     }
 
     .nav-links a:hover {
-      color: var(--text);
+      color: #fff;
     }
 
-    .btn-nav {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
+    .btn-header-cta {
       background: #fff;
-      color: #000;
-      text-decoration: none;
-      transition: all 0.2s;
+      color: #000 !important;
+      font-weight: 600;
+      font-size: 0.84rem;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background 0.15s ease;
     }
 
-    .btn-nav:hover {
-      background: #e5e7eb;
-      transform: translateY(-1px);
+    .btn-header-cta:hover {
+      background: #e5e5e5;
     }
 
-    /* Hero */
+    /* Linhas Divisórias Técnicas */
+    .hairline {
+      width: 100%;
+      height: 1px;
+      background-color: var(--border);
+    }
+
+    /* Hero Section */
     .hero {
-      padding: 80px 0 60px;
-      text-align: center;
+      padding: 96px 0 72px;
     }
 
-    .badge-pill {
-      display: inline-flex;
+    .topic-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+      display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid var(--border-accent);
-      color: var(--emerald);
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 24px;
     }
 
-    .pulse-dot {
-      width: 7px;
-      height: 7px;
+    .topic-tag::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #fff;
       border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 10px var(--emerald);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
     }
 
     .hero-title {
-      font-size: clamp(2.5rem, 6vw, 4.2rem);
-      font-weight: 900;
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.2vw, 4.4rem);
+      font-weight: 700;
       line-height: 1.1;
-      letter-spacing: -0.04em;
-      margin-bottom: 24px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      max-width: 980px;
+      margin-bottom: 28px;
+      text-align: left;
     }
 
-    .gradient-text {
-      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-desc {
-      font-size: clamp(1rem, 2vw, 1.25rem);
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.3vw, 1.25rem);
       color: var(--text-muted);
-      max-width: 680px;
-      margin: 0 auto 36px;
+      max-width: 760px;
       font-weight: 400;
+      line-height: 1.65;
+      margin-bottom: 40px;
+      text-align: left;
     }
 
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
       gap: 16px;
-      margin-bottom: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
     }
 
-    .btn-cta-primary {
+    .btn-download-primary {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #03150d;
+      background: #ffffff;
+      color: #000000;
       text-decoration: none;
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+      border: 1px solid #ffffff;
     }
 
-    .btn-cta-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 40px rgba(16, 185, 129, 0.45);
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    .btn-download-primary:hover {
+      background: #e0e0e0;
+      border-color: #e0e0e0;
+      transform: translateY(-1px);
     }
 
-    .btn-cta-secondary {
+    .btn-download-primary svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn-secondary {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 16px 26px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      background: var(--bg-card);
-      color: var(--text);
+      background: transparent;
+      color: #ffffff;
       text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 14px 24px;
+      border-radius: 4px;
       border: 1px solid var(--border);
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
 
-    .btn-cta-secondary:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.18);
+    .btn-secondary:hover {
+      border-color: #666;
+      background: #0d0d0d;
     }
 
-    .specs-pill-group {
+    /* Especificações Técnicas em Strip */
+    .specs-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+      margin-bottom: 72px;
+      gap: 24px;
+    }
+
+    .spec-col {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .spec-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
       color: var(--text-dim);
-      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .spec-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .spec-val {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
     }
 
-    .spec-item svg {
-      width: 16px;
-      height: 16px;
-      color: var(--emerald);
-    }
-
-    /* Mockup do Navegador */
-    .mockup-wrapper {
-      margin: 40px auto 80px;
-      max-width: 980px;
-      border-radius: 18px;
-      background: #0b0d13;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.1);
+    /* Frame do Navegador em Foco Real */
+    .browser-showcase {
+      margin-bottom: 96px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      border-radius: 8px;
       overflow: hidden;
-      text-align: left;
     }
 
     .window-header {
-      background: #141722;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .window-controls {
-      display: flex;
-      gap: 8px;
-    }
-
-    .control-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #2a2e3f;
-    }
-
-    .omnibox {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #090a0f;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 6px 14px;
-      width: 100%;
-      max-width: 440px;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .omnibox img {
-      width: 14px;
-      height: 14px;
-    }
-
-    .window-body {
-      padding: 36px 24px;
-      background: radial-gradient(circle at 50% 30%, #111420 0%, #07080d 100%);
-      text-align: center;
-    }
-
-    .browser-center-logo {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 16px;
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      padding: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-    }
-
-    .browser-center-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .telemetry-metrics-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .stat-chip {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .stat-chip span.highlight {
-      color: var(--emerald);
-      font-weight: 700;
-    }
-
-    /* Seção de Benchmarks */
-    section {
-      padding: 80px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-
-    .section-tag {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--emerald);
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-
-    .section-desc {
-      color: var(--text-muted);
-      max-width: 600px;
-      margin: 0 auto;
-      font-size: 1.05rem;
-    }
-
-    .benchmark-table-wrapper {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow-x: auto;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
-
-    table.benchmark-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.95rem;
-    }
-
-    table.benchmark-table th, 
-    table.benchmark-table td {
-      padding: 18px 24px;
+      height: 42px;
+      background: #0d0d0d;
       border-bottom: 1px solid var(--border);
-    }
-
-    table.benchmark-table th {
-      background: rgba(255, 255, 255, 0.02);
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-dim);
-    }
-
-    table.benchmark-table tr.highlight-row {
-      background: rgba(16, 185, 129, 0.07);
-    }
-
-    table.benchmark-table tr.highlight-row td {
-      border-color: rgba(16, 185, 129, 0.2);
-    }
-
-    .score-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
-
-    .score-best {
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--emerald);
-      border: 1px solid var(--border-accent);
-    }
-
-    .score-neutral {
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-muted);
-    }
-
-    /* Cards dos 4 Pilares */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      transition: all 0.2s ease;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      padding: 0 16px;
       gap: 16px;
     }
 
-    .feature-card:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-4px);
+    .window-dots {
+      display: flex;
+      gap: 8px;
     }
 
-    .feature-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2a2a2a;
+    }
+
+    .window-address-bar {
+      flex: 1;
+      max-width: 540px;
+      height: 26px;
+      background: #141414;
+      border: 1px solid var(--border);
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-
-    .icon-emerald { background: rgba(16, 185, 129, 0.12); color: var(--emerald); border: 1px solid var(--border-accent); }
-    .icon-cyan { background: rgba(6, 182, 212, 0.12); color: var(--cyan); border: 1px solid rgba(6, 182, 212, 0.3); }
-    .icon-violet { background: rgba(168, 85, 247, 0.12); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
-    .icon-amber { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-
-    .feature-card h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-    }
-
-    .feature-card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* Passos de Instalação */
-    .steps-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .step-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      position: relative;
-    }
-
-    .step-num {
-      position: absolute;
-      top: 20px;
-      right: 24px;
+      padding: 0 10px;
       font-family: var(--font-mono);
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: rgba(255, 255, 255, 0.08);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      gap: 8px;
     }
 
-    .step-card h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
+    .window-content {
+      padding: 48px;
+      background: #050505;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inner-brand {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      color: #fff;
       margin-bottom: 8px;
     }
 
-    .step-card p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    /* FAQ */
-    .faq-wrapper {
-      max-width: 760px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    details.faq-item {
-      background: var(--bg-card);
+    .inner-search {
+      width: 100%;
+      max-width: 600px;
+      height: 48px;
+      background: #0d0d0d;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      transition: border-color 0.2s;
-    }
-
-    details.faq-item[open] {
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    summary.faq-question {
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      list-style: none;
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      user-select: none;
-    }
-
-    summary.faq-question::-webkit-details-marker {
-      display: none;
-    }
-
-    summary.faq-question::after {
-      content: "+";
-      font-size: 1.4rem;
-      line-height: 1;
-      color: var(--emerald);
-      transition: transform 0.2s;
-    }
-
-    details[open] summary.faq-question::after {
-      transform: rotate(45deg);
-    }
-
-    .faq-answer {
-      padding-top: 14px;
+      padding: 0 16px;
       color: var(--text-muted);
       font-size: 0.9rem;
+      margin-bottom: 24px;
+      gap: 12px;
+    }
+
+    .inner-shortcuts {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .inner-pill {
+      background: #111;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Grid de Pilares Técnicos */
+    .section-header {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 96px;
+    }
+
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 32px;
+      border-radius: 6px;
+      transition: border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pillar-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .pillar-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .pillar-heading {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .pillar-text {
+      font-size: 0.92rem;
+      color: var(--text-muted);
       line-height: 1.6;
+    }
+
+    /* Tabela Comparativa de Engenharia */
+    .table-container {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow-x: auto;
+      margin-bottom: 96px;
+      background: var(--bg-surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      background: #080808;
+    }
+
+    td {
+      color: var(--text-muted);
+    }
+
+    td.feature-name {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    td.highlight {
+      color: #fff;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Bloco de Download Final */
+    .download-box {
+      border: 1px solid var(--border);
+      background: #080808;
+      padding: 64px 48px;
+      border-radius: 6px;
+      margin-bottom: 96px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .download-info h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .download-info p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
-      background: #040508;
-      padding: 48px 0 32px;
+      padding: 48px 0;
       margin-top: auto;
       font-size: 0.85rem;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     .footer-inner {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-      gap: 24px;
-    }
-
-    .footer-brand {
-      display: flex;
       align-items: center;
-      gap: 10px;
-    }
-
-    .footer-brand img {
-      width: 22px;
-      height: 22px;
+      flex-wrap: wrap;
+      gap: 24px;
     }
 
     .footer-links {
       display: flex;
-      gap: 20px;
+      gap: 24px;
     }
 
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
-      transition: color 0.15s;
+      transition: color 0.15s ease;
     }
 
     .footer-links a:hover {
-      color: var(--text);
+      color: #fff;
     }
 
-    /* Modal de Download */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-backdrop.active {
-      display: flex;
-    }
-
-    .modal-card {
-      background: #0e111a;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 20px;
-      max-width: 520px;
-      width: 100%;
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(16, 185, 129, 0.2);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 18px;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 4px;
-      line-height: 1;
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: 840px) {
+      .specs-strip { grid-template-columns: repeat(2, 1fr); }
+      .pillars-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
-      .hero-title { font-size: 2.4rem; }
-      .omnibox { max-width: 220px; }
+      .download-box { padding: 36px 24px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="ambient-glow-1"></div>
-  <div class="ambient-glow-2"></div>
-
   <!-- Header -->
   <header>
-    <div class="container nav-inner">
-      <a href="/" class="logo-brand">
-        <div class="logo-icon">
-          <img src="/nave.svg" alt="Logo Nave" width="26" height="26">
-        </div>
-        <span class="brand-title">
-          NAVE
-          <span class="brand-tag">OZATI</span>
-        </span>
-      </a>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="/" class="brand-lockup">
+          <svg class="brand-mark" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12" />
+          </svg>
+          <div class="brand-names">
+            <span class="brand-ozati">ozati™</span>
+            <span class="brand-nave">/ nave</span>
+          </div>
+        </a>
 
-      <ul class="nav-links">
-        <li><a href="#benchmarks">Benchmarks</a></li>
-        <li><a href="#pilares">Engenharia</a></li>
-        <li><a href="#instalacao">Como Usar</a></li>
-        <li><a href="#faq">Dúvidas</a></li>
-        <li><a href="https://github.com/OZATI/nave-browser" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-
-      <a href="#download" class="btn-nav" onclick="openDownloadModal(event)">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Baixar Grátis
-      </a>
+        <nav class="nav-links">
+          <a href="#recursos">Recursos</a>
+          <a href="#arquitetura">Arquitetura</a>
+          <a href="#comparativo">Comparativo</a>
+          <a href="https://github.com/OZATI/nave-browser" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/OZATI/nave-browser/releases/download/v1.0.1/Nave-Setup.exe" class="btn-header-cta">Baixar v1.0.1</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero -->
-    <section class="hero" id="download">
-      <div class="container">
-        <div class="badge-pill">
-          <span class="pulse-dot"></span>
-          <span>Chromium 151 Pure • Win x64 • Versão 1.0 Oficial</span>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="topic-tag">Topic — 0.1 / Engenharia Desktop OZATI</div>
+      
+      <h1 class="hero-title">
+        O navegador desktop construído para velocidade bruta e privacidade real.
+      </h1>
+
+      <p class="hero-subtitle">
+        Motor Chromium 151 despojado de toda telemetria e processos fantasmas. Renderização direta a 120 FPS via GPU, busca Google nativa sem telas de consentimento abusivas, arquitetura Local-First e instalador oficial registrado no Windows.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://github.com/OZATI/nave-browser/releases/download/v1.0.1/Nave-Setup.exe" class="btn-download-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Baixar Nave para Windows</span>
+        </a>
+        <a href="https://github.com/OZATI/nave-browser" target="_blank" rel="noopener" class="btn-secondary">
+          <span>Repositório GitHub</span>
+        </a>
+      </div>
+
+      <!-- Specs Strip -->
+      <div class="specs-strip">
+        <div class="spec-col">
+          <span class="spec-label">Núcleo</span>
+          <span class="spec-val">Chromium 151 Nativo</span>
         </div>
-
-        <h1 class="hero-title">
-          A velocidade bruta da web.<br>
-          <span class="gradient-text">Sem telemetria e sem travas.</span>
-        </h1>
-
-        <p class="hero-desc">
-          O <strong>Nave</strong> é o navegador desktop de alto desempenho do ecossistema OZATI. 
-          Criado em cima do motor puro do Chromium, com renderização direta por GPU, 
-          zero processos ocultos consumindo RAM e 100% de compatibilidade com qualquer extensão da Chrome Web Store.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#download" class="btn-cta-primary" onclick="openDownloadModal(event)">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Baixar Nave para Windows</span>
-          </a>
-
-          <a href="https://github.com/OZATI/nave-browser" target="_blank" rel="noopener" class="btn-cta-secondary">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            <span>Código Aberto no GitHub</span>
-          </a>
+        <div class="spec-col">
+          <span class="spec-label">Renderização</span>
+          <span class="spec-val">120 FPS GPU Raster</span>
         </div>
+        <div class="spec-col">
+          <span class="spec-label">Busca Padrão</span>
+          <span class="spec-val">Google Instant Search</span>
+        </div>
+        <div class="spec-col">
+          <span class="spec-label">Privacidade</span>
+          <span class="spec-val">Zero Telemetria Externa</span>
+        </div>
+      </div>
 
-        <div class="specs-pill-group">
-          <div class="spec-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Sem instalação pesada</span>
+      <!-- Browser Preview Showcase -->
+      <div class="browser-showcase">
+        <div class="window-header">
+          <div class="window-dots">
+            <div class="window-dot"></div>
+            <div class="window-dot"></div>
+            <div class="window-dot"></div>
           </div>
-          <div class="spec-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Aceleração DirectX 12 & Vulkan</span>
-          </div>
-          <div class="spec-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Windows 10 e 11 (64-bit)</span>
-          </div>
-          <div class="spec-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>100% Grátis & Livre</span>
+          <div class="window-address-bar">
+            <span>🔒</span>
+            <span>https://google.com/search?q=ozati</span>
           </div>
         </div>
-
-        <!-- Mockup do Navegador -->
-        <div class="mockup-wrapper">
-          <div class="window-header">
-            <div class="window-controls">
-              <div class="control-dot" style="background: #ef4444;"></div>
-              <div class="control-dot" style="background: #eab308;"></div>
-              <div class="control-dot" style="background: #22c55e;"></div>
-            </div>
-            <div class="omnibox">
-              <img src="/nave.svg" alt="Nave Icon">
-              <span>nave://start</span>
-            </div>
-            <div style="width: 50px;"></div>
+        <div class="window-content">
+          <div class="inner-brand">ozati™ nave</div>
+          <div class="inner-search">
+            <span>🔍</span>
+            <span>Pesquisar com Google ou digitar endereço...</span>
           </div>
-          <div class="window-body">
-            <div class="browser-center-logo">
-              <img src="/nave.svg" alt="Nave" width="44" height="44">
-            </div>
-            <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 6px;">Nave Pronto para Voar</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 480px; margin: 0 auto;">
-              Pipeline gráfico liberado • Cache em SSD ultra veloz • Zero conexões de rastreamento ativas
-            </p>
-
-            <div class="telemetry-metrics-bar">
-              <div class="stat-chip">
-                <span>Latência de Boot:</span>
-                <span class="highlight">&lt; 0.38s</span>
-              </div>
-              <div class="stat-chip">
-                <span>Renderizador:</span>
-                <span class="highlight">DirectX 12 / GPU</span>
-              </div>
-              <div class="stat-chip">
-                <span>Taxa de Quadros:</span>
-                <span class="highlight">120 FPS cravado</span>
-              </div>
-              <div class="stat-chip">
-                <span>Telemetria externa:</span>
-                <span class="highlight">0 KB enviado</span>
-              </div>
-            </div>
+          <div class="inner-shortcuts">
+            <div class="inner-pill"><span>⚡</span> Google Search</div>
+            <div class="inner-pill"><span>🛡️</span> Nave Shield Ativo</div>
+            <div class="inner-pill"><span>📁</span> Local-First Isolated</div>
+            <div class="inner-pill"><span>🧭</span> Barra Lateral Produtiva</div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Benchmarks -->
-    <section id="benchmarks">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Desempenho Comprovado</div>
-          <h2 class="section-title">Nave vs Navegadores Convencionais</h2>
-          <p class="section-desc">
-            Medições em ambiente real no Windows 11. Veja a diferença ao retirar todo o peso morto que as grandes empresas colocam no seu navegador.
-          </p>
-        </div>
-
-        <div class="benchmark-table-wrapper">
-          <table class="benchmark-table">
-            <thead>
-              <tr>
-                <th>Navegador</th>
-                <th>Tempo de Inicialização</th>
-                <th>Consumo de RAM (Boot)</th>
-                <th>Telemetria em 2º Plano</th>
-                <th>Renderização por GPU</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="highlight-row">
-                <td>
-                  <strong style="display: flex; align-items: center; gap: 8px; color: #fff;">
-                    <img src="/nave.svg" width="20" height="20" alt="Nave">
-                    Nave (OZATI)
-                  </strong>
-                </td>
-                <td><span class="score-badge score-best">0.38s</span></td>
-                <td><span class="score-badge score-best">~95 MB</span></td>
-                <td><span class="score-badge score-best">0 conexões</span></td>
-                <td><span class="score-badge score-best">Nativa 120 FPS</span></td>
-              </tr>
-              <tr>
-                <td><strong>Google Chrome</strong></td>
-                <td><span class="score-badge score-neutral">1.82s</span></td>
-                <td><span class="score-badge score-neutral">420 MB</span></td>
-                <td><span class="score-badge score-neutral">38 conexões/min</span></td>
-                <td><span class="score-badge score-neutral">Limitada</span></td>
-              </tr>
-              <tr>
-                <td><strong>Microsoft Edge</strong></td>
-                <td><span class="score-badge score-neutral">1.54s</span></td>
-                <td><span class="score-badge score-neutral">380 MB</span></td>
-                <td><span class="score-badge score-neutral">45 conexões/min</span></td>
-                <td><span class="score-badge score-neutral">Limitada</span></td>
-              </tr>
-              <tr>
-                <td><strong>Brave Browser</strong></td>
-                <td><span class="score-badge score-neutral">1.10s</span></td>
-                <td><span class="score-badge score-neutral">290 MB</span></td>
-                <td><span class="score-badge score-neutral">6 conexões (Shields)</span></td>
-                <td><span class="score-badge score-neutral">Padrão</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <!-- Pilares de Engenharia -->
+      <div id="recursos" class="section-header">
+        <div class="topic-tag">Topic — 0.2 / Fundamentos</div>
+        <h2 class="section-title">Arquitetura e Engenharia Sem Compromissos</h2>
+        <p class="section-desc">Cada linha do código e cada flag de inicialização foram configuradas para eliminar o peso desnecessário da web moderna.</p>
       </div>
-    </section>
 
-    <!-- 4 Pilares de Engenharia -->
-    <section id="pilares">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Engenharia Sob Medida</div>
-          <h2 class="section-title">O que torna o Nave tão veloz?</h2>
-          <p class="section-desc">Quatro decisões técnicas tomadas para você nunca mais esperar uma página carregar.</p>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-num">01 / MOTOR PURO</div>
+            <h3 class="pillar-heading">Zero Bloatware e Zero Cripto</h3>
+            <p class="pillar-text">Diferente do Brave ou Opera, o Nave não contém carteiras cripto, programas de pontos, popups promocionais ou feeds invasivos. Apenas navegação pura e de altíssima velocidade.</p>
+          </div>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon icon-emerald">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <h3>Zero Overhead de Telemetria</h3>
-            <p>
-              Desativamos todos os relatórios de erros, métricas de publicidade, sugestões de pesquisa abusivas e conexões fantasmas que sugam sua CPU enquanto você digita.
-            </p>
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-num">02 / PESQUISA GOOGLE NATIVA</div>
+            <h3 class="pillar-heading">Busca Instantânea Sem Erros</h3>
+            <p class="pillar-text">Políticas corporativas do Windows configuradas de fábrica para garantir o Google como buscador padrão no omnibox, eliminando telas de escolha DMA e erros de DNS.</p>
           </div>
+        </div>
 
-          <div class="feature-card">
-            <div class="feature-icon icon-cyan">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
-            </div>
-            <h3>Pipelines Diretos de GPU</h3>
-            <p>
-              Com flags dedicadas para aceleração gráfica (`--enable-gpu-rasterization` e `--enable-zero-copy`), vídeos em 4K no YouTube e webapps modernos rodam direto na placa de vídeo.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon icon-violet">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.439 7.85c0-1.57-1.12-2.85-2.5-2.85h-1.5V3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5V5h-1.5c-1.38 0-2.5 1.28-2.5 2.85 0 .96.43 1.8 1.1 2.3-.67.5-1.1 1.34-1.1 2.3 0 1.57 1.12 2.85 2.5 2.85H12v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V15h1.5c1.38 0 2.5-1.28 2.5-2.85 0-.96-.43-1.8-1.1-2.3.67-.5 1.1-1.34 1.1-2.3z"/></svg>
-            </div>
-            <h3>Extensões Chrome Nativas</h3>
-            <p>
-              Não mude seus hábitos. O Nave suporta com total fidelidade o ecossistema completo de extensões da Chrome Web Store (uBlock Origin, Bitwarden, React DevTools, etc.).
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon icon-amber">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <h3>Privacidade e Isolamento Local</h3>
-            <p>
-              Nenhum dado seu é enviado para sincronização na nuvem sem o seu consentimento. Seu perfil, senhas e histórico vivem guardados exclusivamente no seu disco local.
-            </p>
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-num">03 / ATUALIZAÇÕES SILENCIOSAS</div>
+            <h3 class="pillar-heading">Distribuição em Tempo Real</h3>
+            <p class="pillar-text">O lançador C# monitora novas versões em segundo plano através do endpoint oficial version.json e aplica as atualizações silenciosamente assim que o navegador é fechado.</p>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Passos de Instalação -->
-    <section id="instalacao">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Instalação Relâmpago</div>
-          <h2 class="section-title">Como começar a usar em 30 segundos</h2>
-        </div>
-
-        <div class="steps-container">
-          <div class="step-card">
-            <div class="step-num">01</div>
-            <h4>Baixe o Pacote</h4>
-            <p>Clique no botão de download e salve o pacote oficial do Nave para Windows (64-bit).</p>
-          </div>
-
-          <div class="step-card">
-            <div class="step-num">02</div>
-            <h4>Extraia os Arquivos</h4>
-            <p>Extraia a pasta em qualquer diretório (ex: Documentos ou Arquivos de Programas). Não precisa de instalador pesado.</p>
-          </div>
-
-          <div class="step-card">
-            <div class="step-num">03</div>
-            <h4>Execute o Nave.exe</h4>
-            <p>Dê dois cliques no executável com o ícone do Nave. Ele abre instantaneamente com aceleração máxima de GPU ativada.</p>
-          </div>
-        </div>
+      <!-- Comparativo -->
+      <div id="comparativo" class="section-header">
+        <div class="topic-tag">Topic — 0.3 / Análise Técnica</div>
+        <h2 class="section-title">Comparativo de Eficiência</h2>
+        <p class="section-desc">Métricas reais de execução observadas no Windows 11 em ambiente de trabalho.</p>
       </div>
-    </section>
 
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Tire Suas Dúvidas</div>
-          <h2 class="section-title">Perguntas Frequentes</h2>
-        </div>
-
-        <div class="faq-wrapper">
-          <details class="faq-item">
-            <summary class="faq-question">O Nave é compatível com meu Windows?</summary>
-            <div class="faq-answer">
-              Sim! O Nave é compilado para Windows 10 e Windows 11 em arquitetura de 64 bits (x64), com suporte a placas de vídeo NVIDIA, AMD e Intel.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">Posso usar minhas extensões favoritas do Chrome?</summary>
-            <div class="faq-answer">
-              Com certeza. Como o motor interno é o Chromium puro, todas as extensões da Chrome Web Store (bloqueadores de anúncios, gerenciadores de senha, extensões de produtividade) funcionam normalmente.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">O Nave substitui meus outros navegadores?</summary>
-            <div class="faq-answer">
-              Ele não interfere em nada nos navegadores que você já tem instalados (como Brave, Chrome ou Edge). O perfil do Nave roda de maneira isolada na pasta local, garantindo que nada do seu sistema seja corrompido.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">O código do Nave é aberto?</summary>
-            <div class="faq-answer">
-              Sim! O projeto é 100% transparente e open-source. Você pode auditar todo o código, parâmetros e lançadores diretamente na organização da OZATI no GitHub.
-            </div>
-          </details>
-        </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Recurso</th>
+              <th>Nave (OZATI)</th>
+              <th>Google Chrome</th>
+              <th>Microsoft Edge</th>
+              <th>Brave Browser</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-name">Telemetria em Segundo Plano</td>
+              <td class="highlight">0 (Desativada)</td>
+              <td>Ativa (Contínua)</td>
+              <td>Ativa (Agrupada)</td>
+              <td>Parcial (Opt-out)</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Processos Bloatware / Carteiras</td>
+              <td class="highlight">0</td>
+              <td>0</td>
+              <td>Múltiplos (MS Start/Shopping)</td>
+              <td>Brave Rewards / Wallet</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Rasterização por GPU (120 FPS)</td>
+              <td class="highlight">Forçada nativamente</td>
+              <td>Automática / Conservadora</td>
+              <td>Automática</td>
+              <td>Automática</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Instalação e Auto-Updater</td>
+              <td class="highlight">Nativo Inno Setup / C#</td>
+              <td>Google Update Service</td>
+              <td>Edge Update Service</td>
+              <td>Brave Update Service</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </section>
-  </main>
+
+      <!-- Caixa de Download Final -->
+      <div id="download" class="download-box">
+        <div class="download-info">
+          <h3>Pronto para navegar na velocidade da luz?</h3>
+          <p>Disponível para Windows 10 e Windows 11 (x64). Instalação limpa e silenciosa em segundos.</p>
+        </div>
+        <a href="https://github.com/OZATI/nave-browser/releases/download/v1.0.1/Nave-Setup.exe" class="btn-download-primary">
+          <span>Baixar Nave-Setup.exe (v1.0.1)</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <img src="/nave.svg" alt="Nave">
-        <span><strong>NAVE</strong> &bull; Ecossistema OZATI &copy; 2026. Todos os direitos reservados.</span>
-      </div>
-
-      <div class="footer-links">
-        <a href="https://ozati.co" target="_blank" rel="noopener">Portal OZATI</a>
-        <a href="https://github.com/OZATI/nave-browser" target="_blank" rel="noopener">GitHub</a>
-        <a href="#download">Download</a>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <span>© 2026 OZATI Tecnologia & Inovação. Brand Guidelines 2.0.</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://ozati.co" target="_blank">ozati.co</a>
+          <a href="https://github.com/OZATI/nave-browser" target="_blank">GitHub</a>
+          <a href="https://nave.ozati.co/version.json" target="_blank">version.json</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Modal de Download -->
-  <div class="modal-backdrop" id="downloadModal" onclick="closeModalOnBackdrop(event)">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeDownloadModal()">&times;</button>
-      
-      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-        <div class="logo-icon" style="width: 46px; height: 46px;">
-          <img src="/nave.svg" alt="Nave" width="32" height="32">
-        </div>
-        <div>
-          <h3 style="font-size: 1.25rem; font-weight: 800;">Download Oficial do Nave</h3>
-          <p style="font-size: 0.8rem; color: var(--emerald); font-weight: 600;">Versão 1.0.0 &bull; Windows 64-bit</p>
-        </div>
-      </div>
-
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6;">
-        Escolha o método de download preferido para o seu Windows:
-      </p>
-
-      <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
-        <a href="https://github.com/OZATI/nave-browser/releases/latest/download/Nave-Setup.exe" class="btn-cta-primary" style="justify-content: center; width: 100%; flex-direction: column; align-items: center; text-align: center; padding: 16px 20px; gap: 4px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span style="font-size: 1.05rem;">Baixar Instalador Oficial (.exe) &bull; Recomendado</span>
-          </div>
-          <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.85;">Instalação com 1 clique, atalhos nativos e atualizações em tempo real</span>
-        </a>
-
-        <a href="https://github.com/OZATI/nave-browser/releases/latest/download/Nave-v1.0.0-win64.zip" class="btn-cta-secondary" style="justify-content: center; width: 100%; flex-direction: column; align-items: center; text-align: center; padding: 12px 20px; gap: 4px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Baixar Versão Portátil (.zip)</span>
-          </div>
-          <span style="font-size: 0.72rem; color: var(--text-dim);">Descompacte e use em qualquer pasta ou pen drive</span>
-        </a>
-
-        <a href="https://github.com/OZATI/nave-browser" target="_blank" rel="noopener" class="btn-cta-secondary" style="justify-content: center; width: 100%;">
-          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>Ver Código-Fonte e Releases no GitHub</span>
-        </a>
-      </div>
-
-      <p style="font-size: 0.75rem; color: var(--text-dim); text-align: center;">
-        Compatível com <strong>Windows 10 e Windows 11 (64-bit)</strong>. 100% Livre de Spyware.
-      </p>
-    </div>
-  </div>
-
-  <script>
-    function openDownloadModal(e) {
-      if (e) e.preventDefault();
-      document.getElementById('downloadModal').classList.add('active');
-    }
-
-    function closeDownloadModal() {
-      document.getElementById('downloadModal').classList.remove('active');
-    }
-
-    function closeModalOnBackdrop(e) {
-      if (e.target.id === 'downloadModal') {
-        closeDownloadModal();
-      }
-    }
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeDownloadModal();
-      }
-    });
-  </script>
 </body>
 </html>
