@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "release_date": "2026-09-18",
+  "download_url": "https://github.com/OZATI/nave-browser/releases/latest/download/Nave-Setup.exe",
+  "portable_url": "https://github.com/OZATI/nave-browser/releases/latest/download/Nave-v1.0.0-win64.zip",
+  "notes": "Lançamento oficial do Nave Browser v1.0.0 com instalador nativo para Windows (x64), aceleração de GPU e zero telemetria."
+}
