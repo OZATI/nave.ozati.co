@@ -95,33 +95,17 @@
       gap: 12px;
       text-decoration: none;
       color: #fff;
+      transition: opacity 0.15s ease;
     }
 
-    .brand-mark {
-      width: 32px;
-      height: 32px;
+    .brand-lockup:hover {
+      opacity: 0.82;
     }
 
-    .brand-names {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .brand-ozati {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-
-    .brand-nave {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .brand-logo-img {
+      height: 25px;
+      width: auto;
+      display: block;
     }
 
     .nav-links {
@@ -574,14 +558,8 @@
   <header>
     <div class="container">
       <div class="nav-inner">
-        <a href="/" class="brand-lockup">
-          <svg class="brand-mark" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12" />
-          </svg>
-          <div class="brand-names">
-            <span class="brand-ozati">ozati™</span>
-            <span class="brand-nave">/ nave</span>
-          </div>
+        <a href="/" class="brand-lockup" aria-label="Nave Oficial - OZATI">
+          <img src="/logo-nave.svg" alt="Nave" class="brand-logo-img" width="118" height="26">
         </a>
 
         <nav class="nav-links">
@@ -656,7 +634,9 @@
           </div>
         </div>
         <div class="window-content">
-          <div class="inner-brand">ozati™ nave</div>
+          <div class="inner-brand">
+            <img src="/logo-nave.svg" alt="Nave" style="height: 32px; width: auto; display: block; margin-bottom: 8px;">
+          </div>
           <div class="inner-search">
             <span>🔍</span>
             <span>Pesquisar com Google ou digitar endereço...</span>
@@ -772,8 +752,9 @@
   <footer>
     <div class="container">
       <div class="footer-inner">
-        <div>
-          <span>© 2026 OZATI Tecnologia & Inovação. Brand Guidelines 2.0.</span>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <img src="/logo-nave.svg" alt="Nave" style="height: 18px; width: auto; opacity: 0.7;">
+          <span>© 2026 OZATI Tecnologia & Inovação.</span>
         </div>
         <div class="footer-links">
           <a href="https://ozati.co" target="_blank">ozati.co</a>
