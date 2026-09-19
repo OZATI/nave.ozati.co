@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // Redirecionamento instantâneo para o subdomínio oficial chat.ozati.co preservando query params e hash
+    (function() {
+      if (window.location.hostname === 'nave.ozati.co' || window.location.pathname.endsWith('chat.html')) {
+        window.location.replace('https://chat.ozati.co/' + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
   <title>Nave Chat — Interface Conectada | OZATI</title>
   <meta name="description" content="Converse com Claude, GPT, DeepSeek e Gemini via OpenRouter BYOK. Conecte APIs e dados dos seus sistemas.">
   <meta name="theme-color" content="#000000">
@@ -85,8 +93,8 @@
     }
 
     .chat-sidebar.collapsed {
-      width: 0;
-      border-right: 1px solid transparent;
+      width: 64px;
+      border-right: 1px solid var(--border);
     }
 
     .sidebar-inner {
@@ -95,6 +103,10 @@
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+    }
+
+    .chat-sidebar.collapsed .sidebar-inner {
+      width: 64px;
     }
 
     /* Sidebar Top Header */
@@ -108,37 +120,26 @@
       flex-shrink: 0;
     }
 
-    .sidebar-top-title {
+    .sidebar-brand-link {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #e4e4e7;
-      letter-spacing: -0.01em;
-    }
-
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       text-decoration: none;
-      color: #fff;
-    }
-
-    .brand-group .brand-logo-svg {
-      height: 20px;
-      width: 20px;
-      fill: #fff;
+      line-height: 0;
       flex-shrink: 0;
     }
 
-    .brand-group .brand-logo-wordmark {
-      height: 11px;
+    .sidebar-logo-full {
+      height: 26px;
       width: auto;
-      fill: #ffffff;
+      object-fit: contain;
       display: block;
-      flex-shrink: 0;
+    }
+
+    .sidebar-logo-compact {
+      height: 24px;
+      width: 24px;
+      object-fit: contain;
+      display: none;
     }
 
     .brand-badge {
@@ -153,21 +154,48 @@
 
     .sidebar-toggle-btn {
       background: transparent;
-      border: none;
-      color: var(--text-muted);
-      width: 32px;
-      height: 32px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
     .sidebar-toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--bg-card);
+      border-color: #444;
       color: #fff;
+    }
+
+    /* Collapsed Sidebar State */
+    .chat-sidebar.collapsed .sidebar-top {
+      height: auto;
+      padding: 14px 0;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-sidebar.collapsed .sidebar-logo-full {
+      display: none;
+    }
+
+    .chat-sidebar.collapsed .sidebar-logo-compact {
+      display: block;
+    }
+
+    .chat-sidebar.collapsed .sidebar-actions,
+    .chat-sidebar.collapsed .sidebar-section-title,
+    .chat-sidebar.collapsed .sidebar-scrollable,
+    .chat-sidebar.collapsed .sidebar-footer {
+      display: none;
     }
 
     /* Quick Action Area */
@@ -545,26 +573,6 @@
       align-items: center;
       gap: 12px;
       min-width: 0;
-    }
-
-    .btn-header-sidebar-toggle {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      width: 34px;
-      height: 34px;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.15s;
-      flex-shrink: 0;
-    }
-
-    .btn-header-sidebar-toggle:hover {
-      background: var(--bg-card);
-      border-color: #444;
     }
 
     .header-brand-link {
@@ -1135,13 +1143,74 @@
         left: 0;
         top: 0;
         bottom: 0;
-        width: 280px;
-        transform: translateX(-100%);
-        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.9);
+        width: 56px;
+        transform: translateX(0);
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.5);
+        z-index: 40;
+      }
+
+      .chat-sidebar:not(.mobile-open) .sidebar-inner {
+        width: 56px;
+      }
+
+      .chat-sidebar:not(.mobile-open) .sidebar-top {
+        height: auto;
+        padding: 12px 0;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .chat-sidebar:not(.mobile-open) .sidebar-logo-full {
+        display: none;
+      }
+
+      .chat-sidebar:not(.mobile-open) .sidebar-logo-compact {
+        display: block;
+      }
+
+      .chat-sidebar:not(.mobile-open) .sidebar-actions,
+      .chat-sidebar:not(.mobile-open) .sidebar-section-title,
+      .chat-sidebar:not(.mobile-open) .sidebar-scrollable,
+      .chat-sidebar:not(.mobile-open) .sidebar-footer {
+        display: none;
       }
 
       .chat-sidebar.mobile-open {
-        transform: translateX(0);
+        width: 280px;
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.9);
+      }
+
+      .chat-sidebar.mobile-open .sidebar-inner {
+        width: 280px;
+      }
+
+      .chat-sidebar.mobile-open .sidebar-top {
+        height: 60px;
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .chat-sidebar.mobile-open .sidebar-logo-full {
+        display: block;
+      }
+
+      .chat-sidebar.mobile-open .sidebar-logo-compact {
+        display: none;
+      }
+
+      .chat-sidebar.mobile-open .sidebar-actions,
+      .chat-sidebar.mobile-open .sidebar-section-title,
+      .chat-sidebar.mobile-open .sidebar-scrollable,
+      .chat-sidebar.mobile-open .sidebar-footer {
+        display: flex;
+      }
+
+      .chat-workspace {
+        padding-left: 56px;
       }
 
       .active-chat-badge {
@@ -1171,15 +1240,13 @@
       <div class="sidebar-inner">
         <!-- Sidebar Top Header -->
         <div class="sidebar-top">
-          <div class="sidebar-top-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-            <span>Conversas</span>
-          </div>
+          <a href="/" class="sidebar-brand-link" title="Nave AI">
+            <img src="/logo-nave.svg" alt="nave" class="sidebar-logo-full">
+            <img src="/favicon.svg" alt="nave" class="sidebar-logo-compact">
+          </a>
 
-          <!-- Collapse Sidebar Button -->
-          <button class="sidebar-toggle-btn" id="btnCollapseSidebar" title="Recolher menu lateral" aria-label="Recolher menu lateral">
+          <!-- Toggle Sidebar Button -->
+          <button class="sidebar-toggle-btn" id="btnToggleSidebar" title="Alternar barra lateral" aria-label="Alternar barra lateral">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
               <line x1="9" x2="9" y1="3" y2="21"/>
@@ -1255,14 +1322,6 @@
       <!-- Top Bar Header -->
       <header class="chat-header">
         <div class="header-left">
-          <!-- Expand button visible when desktop sidebar collapsed or on mobile -->
-          <button class="btn-header-sidebar-toggle" id="btnHeaderSidebarToggle" title="Abrir histórico e menu">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
-              <line x1="9" x2="9" y1="3" y2="21"/>
-            </svg>
-          </button>
-
           <!-- Top Bar Brand Logo with BioRhyme Vector Morphing Wordmark -->
           <a href="/" class="header-brand-link" title="Nave AI">
             <svg class="brand-logo-svg" viewBox="0 0 23 23" fill="none">

@@ -3,9 +3,10 @@
 # 0. Prioridade Absoluta para index.html (ignora default.php padrão da Hostinger)
 DirectoryIndex index.html index.php
 
-# Regras de URL limpa (permite acessar /chat direto para chat.html)
+# Redirecionar /chat ou /chat.html para o subdomínio oficial https://chat.ozati.co
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteRule ^chat(\.html)?$ https://chat.ozati.co/ [R=301,L,QSA]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f

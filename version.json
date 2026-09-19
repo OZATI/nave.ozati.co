@@ -3,7 +3,7 @@
   "product": "Nave AI",
   "release_date": "2026-09-18",
   "endpoints": {
-    "web_chat": "https://nave.ozati.co/chat.html",
+    "web_chat": "https://chat.ozati.co",
     "landing": "https://nave.ozati.co/",
     "agent_sdk": "https://nave.ozati.co/agent.js"
   },

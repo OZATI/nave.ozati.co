@@ -4,7 +4,7 @@ Plataforma oficial do **Nave AI**: a camada de interface e conexão entre o usu�
 
 ## Endereços Oficiais
 - **Landing Page**: [https://nave.ozati.co](https://nave.ozati.co)
-- **Nave Chat (Web App)**: [https://nave.ozati.co/chat.html](https://nave.ozati.co/chat.html)
+- **Nave Chat (Web App)**: [https://chat.ozati.co](https://chat.ozati.co)
 - **Shader WebGL (Demo isolada)**: [https://nave.ozati.co/wave.html](https://nave.ozati.co/wave.html)
 - **Nave Agent Embed SDK**: [https://nave.ozati.co/agent.js](https://nave.ozati.co/agent.js)
 
