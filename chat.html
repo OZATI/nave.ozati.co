@@ -332,60 +332,121 @@
     }
 
     /* Bottom Input Bar */
+    /* Bottom Input Bar - Modern 720px Card (120px initial, max 400px) */
     .input-bar-wrapper {
       position: sticky;
       bottom: 0;
-      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.95) 40%, #000000 100%);
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 30%, #000000 100%);
       padding: 16px 20px 24px;
       z-index: 10;
     }
 
-    .input-bar-inner {
-      max-width: 820px;
+    .input-card-container {
+      position: relative;
+      max-width: 720px;
+      min-width: 300px;
+      width: 100%;
       margin: 0 auto;
+    }
+
+    /* Utility classes matching the user's specification */
+    .min-h-\[120px\] { min-height: 120px; }
+    .w-full { width: 100%; }
+    .min-w-\[300px\] { min-width: 300px; }
+    .max-w-\[720px\] { max-width: 720px; }
+    .max-h-\[400px\] { max-height: 400px; }
+    .overflow-y-auto { overflow-y: auto; }
+    .rounded-2xl { border-radius: 16px; }
+    .pb-\[40px\] { padding-bottom: 46px; }
+    .transition-colors { transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+
+    .textarea-custom {
+      width: 100%;
+      min-width: 300px;
+      max-width: 720px;
+      min-height: 120px;
+      max-height: 400px;
+      height: 120px;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 8px 12px 8px 16px;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      transition: border-color 0.15s;
-    }
-
-    .input-bar-inner:focus-within {
-      border-color: #3f3f46;
-    }
-
-    .chat-textarea {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #fff;
+      border-radius: 16px;
+      padding: 16px 18px 48px 18px;
+      color: #ffffff;
       font-family: var(--font-sans);
-      font-size: 14px;
-      line-height: 1.5;
+      font-size: 14.5px;
+      line-height: 1.55;
       resize: none;
-      min-height: 24px;
-      max-height: 160px;
-      padding: 4px 0;
+      outline: none;
+      overflow-y: auto;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+      box-sizing: border-box;
+      display: block;
     }
 
-    .chat-textarea::placeholder {
+    .textarea-custom:focus {
+      border-color: #44444a;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      background: #141416;
+    }
+
+    .textarea-custom::placeholder {
       color: var(--text-dim);
     }
 
-    .input-actions {
+    .input-actions-dock {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .input-dock-left,
+    .input-dock-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .dock-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 4px 9px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
+    .dock-pill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-green);
+    }
+
+    .dock-hint {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 640px) {
+      .dock-hint {
+        display: none;
+      }
+    }
+
     .btn-icon {
-      background: transparent;
-      border: none;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
       color: var(--text-muted);
       width: 32px;
       height: 32px;
@@ -400,11 +461,13 @@
     .btn-icon:hover {
       color: #fff;
       background: #27272a;
+      border-color: #444;
     }
 
     .btn-icon.active {
       color: #ef4444;
       background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
       animation: pulseMic 1.5s infinite;
     }
 
@@ -425,6 +488,7 @@
       justify-content: center;
       cursor: pointer;
       transition: all 0.15s;
+      font-weight: 600;
     }
 
     .btn-send:hover {
@@ -440,7 +504,7 @@
     }
 
     .input-subtext {
-      max-width: 820px;
+      max-width: 720px;
       margin: 8px auto 0;
       font-size: 11px;
       color: var(--text-dim);
@@ -619,36 +683,46 @@
     </div>
   </main>
 
-  <!-- Input Bar -->
+  <!-- Input Bar - Modern 720px Card -->
   <div class="input-bar-wrapper">
-    <div class="input-bar-inner">
+    <div class="input-card-container">
       <textarea
         id="userInput"
-        class="chat-textarea"
-        rows="1"
+        class="min-h-[120px] w-full min-w-[300px] max-w-[720px] max-h-[400px] overflow-y-auto textarea-custom rounded-2xl pb-[40px] transition-colors"
+        style="height: 120px;"
         placeholder="Digite uma mensagem ou pergunte sobre os dados dos seus sistemas..."
       ></textarea>
 
-      <div class="input-actions">
-        <button class="btn-icon" id="btnVoice" title="Digitar por voz (Microfone)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-            <line x1="12" x2="12" y1="19" y2="22"/>
-          </svg>
-        </button>
+      <div class="input-actions-dock">
+        <div class="input-dock-left">
+          <span class="dock-pill" id="dockModelBadge">
+            <span class="dock-pill-dot"></span>
+            <span id="dockModelLabel">Claude 3.5</span>
+          </span>
+          <span class="dock-hint">Shift + Enter para nova linha</span>
+        </div>
 
-        <button class="btn-send" id="btnSend" title="Enviar (Enter)">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="19" x2="12" y2="5"/>
-            <polyline points="5 12 12 5 19 12"/>
-          </svg>
-        </button>
+        <div class="input-dock-right">
+          <button class="btn-icon" id="btnVoice" title="Digitar por voz (Microfone)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" x2="12" y1="19" y2="22"/>
+            </svg>
+          </button>
+
+          <button class="btn-send" id="btnSend" title="Enviar (Enter)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"/>
+              <polyline points="5 12 12 5 19 12"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
 
     <div class="input-subtext">
-      <span>Shift + Enter para nova linha</span>
+      <span>Nave Core &bull; Conexão Direta</span>
       <span id="statusIndicator">Modo: Conexão Direta</span>
     </div>
   </div>
@@ -750,10 +824,22 @@
       keyModal.classList.remove('open');
     });
 
-    // Auto-resize do Textarea
+    // Dock Model Badge Sync
+    function updateDockModel() {
+      const dockModelLabel = document.getElementById('dockModelLabel');
+      if (dockModelLabel && modelSelect) {
+        const selected = modelSelect.options[modelSelect.selectedIndex];
+        dockModelLabel.textContent = selected ? selected.text.replace(/\(Free\)/i, '').trim() : 'Claude 3.5';
+      }
+    }
+    modelSelect.addEventListener('change', updateDockModel);
+    updateDockModel();
+
+    // Auto-resize do Textarea (min 120px, max 400px)
     userInput.addEventListener('input', () => {
-      userInput.style.height = 'auto';
-      userInput.style.height = Math.min(userInput.scrollHeight, 160) + 'px';
+      userInput.style.height = '120px';
+      const newHeight = Math.max(120, Math.min(userInput.scrollHeight, 400));
+      userInput.style.height = newHeight + 'px';
     });
 
     // Envio por Teclado (Enter sem Shift)
@@ -769,9 +855,24 @@
     // Sugestões Rápidas
     window.useSuggestion = function(text) {
       userInput.value = text;
-      userInput.style.height = 'auto';
+      userInput.style.height = '120px';
+      const newHeight = Math.max(120, Math.min(userInput.scrollHeight, 400));
+      userInput.style.height = newHeight + 'px';
       sendMessage();
     };
+
+    // Parâmetros de URL (?prompt=...&send=1) vindos da Landing Page
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPrompt = urlParams.get('prompt');
+    if (initialPrompt && initialPrompt.trim()) {
+      userInput.value = initialPrompt.trim();
+      userInput.style.height = '120px';
+      const newHeight = Math.max(120, Math.min(userInput.scrollHeight, 400));
+      userInput.style.height = newHeight + 'px';
+      if (urlParams.get('send') === '1') {
+        setTimeout(sendMessage, 400);
+      }
+    }
 
     // Limpar Chat
     btnClearChat.addEventListener('click', () => {
@@ -884,7 +985,7 @@
       if (!text || isGenerating) return;
 
       userInput.value = '';
-      userInput.style.height = 'auto';
+      userInput.style.height = '120px';
       btnSend.disabled = true;
       isGenerating = true;
 

@@ -325,6 +325,140 @@
       border-color: var(--border-hover);
     }
 
+    /* Hero Interactive Prompt Card - 720px Card (120px initial, max 400px) */
+    .hero-prompt-container {
+      position: relative;
+      max-width: 720px;
+      min-width: 300px;
+      width: 100%;
+      margin: 0 0 28px 0;
+      z-index: 2;
+    }
+
+    /* Utility classes matching the user's specification */
+    .min-h-\[120px\] { min-height: 120px; }
+    .w-full { width: 100%; }
+    .min-w-\[300px\] { min-width: 300px; }
+    .max-w-\[720px\] { max-width: 720px; }
+    .max-h-\[400px\] { max-height: 400px; }
+    .overflow-y-auto { overflow-y: auto; }
+    .rounded-2xl { border-radius: 16px; }
+    .pb-\[40px\] { padding-bottom: 46px; }
+    .transition-colors { transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+
+    .textarea-custom {
+      width: 100%;
+      min-width: 300px;
+      max-width: 720px;
+      min-height: 120px;
+      max-height: 400px;
+      height: 120px;
+      background: rgba(18, 18, 20, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px 48px 18px;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      resize: none;
+      outline: none;
+      overflow-y: auto;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      box-sizing: border-box;
+      display: block;
+    }
+
+    .textarea-custom:focus {
+      border-color: #4a4a52;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      background: rgba(22, 22, 26, 0.95);
+    }
+
+    .textarea-custom::placeholder {
+      color: var(--text-dim);
+    }
+
+    .hero-prompt-toolbar {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .hero-prompt-chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      pointer-events: auto;
+      max-width: calc(100% - 46px);
+    }
+
+    .hero-prompt-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .hero-prompt-chip:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .btn-hero-send {
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      pointer-events: auto;
+      flex-shrink: 0;
+    }
+
+    .btn-hero-send:hover {
+      background: #e4e4e7;
+      transform: scale(1.04);
+    }
+
+    .hero-prompt-footer-hint {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      margin-top: 8px;
+      padding: 0 6px;
+      max-width: 720px;
+    }
+
+    @media (max-width: 640px) {
+      .hero-prompt-chips {
+        display: none;
+      }
+    }
+
     /* Manifesto Section */
     .manifesto-section {
       padding: 90px 0;
@@ -795,9 +929,47 @@
         <span class="platform-pill"><span class="pill-dot"></span>WhatsApp Gateway</span>
       </div>
 
+      <!-- Interactive Hero Prompt Card - Modern 720px Card -->
+      <div class="hero-prompt-container">
+        <form id="heroPromptForm" onsubmit="handleHeroSubmit(event)">
+          <textarea
+            id="heroInput"
+            class="min-h-[120px] w-full min-w-[300px] max-w-[720px] max-h-[400px] overflow-y-auto textarea-custom rounded-2xl pb-[40px] transition-colors"
+            style="height: 120px;"
+            placeholder="Digite uma pergunta, consulte prontuários do Clinic Kiosk ou conecte uma API..."
+          ></textarea>
+
+          <div class="hero-prompt-toolbar">
+            <div class="hero-prompt-chips">
+              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Quantos pacientes precisam de retorno hoje no Clinic Kiosk?')">
+                Pacientes hoje
+              </button>
+              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Como conectar as APIs dos meus sistemas ao Nave?')">
+                Conectar APIs
+              </button>
+              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Explique o modelo BYOK com OpenRouter no Nave')">
+                BYOK OpenRouter
+              </button>
+            </div>
+
+            <button type="submit" class="btn-hero-send" title="Conversar com Nave Chat (Enter)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"/>
+                <polyline points="5 12 12 5 19 12"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+
+        <div class="hero-prompt-footer-hint">
+          <span>Pressione Enter para abrir no Nave Chat &bull; Claude 3.5, GPT-4o, DeepSeek</span>
+          <span>Sem cadastro obrigatório</span>
+        </div>
+      </div>
+
       <div class="hero-cta-group">
         <a href="/chat.html" class="btn-cta-main">
-          <span>Abrir Nave Chat</span>
+          <span>Abrir Nave Chat Completo</span>
           <span>&rarr;</span>
         </a>
         <a href="#produtos" class="btn-cta-secondary">
@@ -1212,6 +1384,43 @@
       }
       requestAnimationFrame(loop);
     })();
+
+    // Auto-resize do Hero Textarea & Submit interativo
+    const heroInput = document.getElementById('heroInput');
+    if (heroInput) {
+      heroInput.addEventListener('input', () => {
+        heroInput.style.height = '120px';
+        const newHeight = Math.max(120, Math.min(heroInput.scrollHeight, 400));
+        heroInput.style.height = newHeight + 'px';
+      });
+
+      heroInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleHeroSubmit(e);
+        }
+      });
+    }
+
+    function applyHeroPrompt(text) {
+      if (heroInput) {
+        heroInput.value = text;
+        heroInput.style.height = '120px';
+        const newHeight = Math.max(120, Math.min(heroInput.scrollHeight, 400));
+        heroInput.style.height = newHeight + 'px';
+        heroInput.focus();
+      }
+    }
+
+    function handleHeroSubmit(e) {
+      if (e) e.preventDefault();
+      const val = heroInput ? heroInput.value.trim() : '';
+      if (val) {
+        window.location.href = '/chat.html?prompt=' + encodeURIComponent(val) + '&send=1';
+      } else {
+        window.location.href = '/chat.html';
+      }
+    }
   </script>
 </body>
 </html>
