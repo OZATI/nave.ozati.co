@@ -33,10 +33,21 @@ ErrorDocument 404 /404.php
 
 # 2. CORS & Vary: Accept Headers for Agents and Crawlers
 <IfModule mod_headers.c>
-  Header always set Vary "Accept"
+  Header always set Vary "Accept, Accept-Encoding"
+  Header set Vary "Accept, Accept-Encoding"
   Header always set Access-Control-Allow-Origin "*"
   Header always set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
   Header always set Access-Control-Allow-Headers "Accept, Authorization, Content-Type, User-Agent"
+
+  # Garantir que a raiz / e index.php nunca sejam cacheados pela CDN sem variar por Accept
+  <FilesMatch "^(index\.(php|html)|404\.(php|html))?$">
+    Header always set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header always set Vary "Accept, Accept-Encoding"
+    Header set Vary "Accept, Accept-Encoding"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
 
   <FilesMatch "\.(html|htm)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"

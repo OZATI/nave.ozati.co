@@ -1,7 +1,10 @@
 <?php
 // Markdown Content Negotiation (acceptmarkdown.com standard) for Nave AI Homepage
 $accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-header('Vary: Accept');
+header('Vary: Accept, Accept-Encoding');
+header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, HEAD, OPTIONS');
 
