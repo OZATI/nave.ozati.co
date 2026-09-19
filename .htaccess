@@ -1,49 +1,86 @@
-# Nave.ozati.co - Apache / LiteSpeed Performance & Security Rules
+# Nave.ozati.co - Apache / LiteSpeed Configuration
+# Optimized for AI Agents (acceptmarkdown.com), SEO & Performance
 
-# 0. Prioridade Absoluta para index.html (ignora default.php padrão da Hostinger)
-DirectoryIndex index.html index.php
+# 0. DirectoryIndex: index.php handles Markdown Content Negotiation & HTML fallback
+DirectoryIndex index.php index.html
 
-# Redirecionar /chat ou /chat.html para o subdomínio oficial https://chat.ozati.co
+# 1. Custom 404 Handler for AI Agents and Browsers
+ErrorDocument 404 /404.php
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase /
+
+  # Allowlist and tag verified AI Agent crawlers
+  RewriteCond %{HTTP_USER_AGENT} (ChatGPT-User|ClaudeBot|Claude-Web|Google-Extended|DeepSeekBot|GPTBot|PerplexityBot|anthropic-ai|OAI-SearchBot|Applebot-Extended|Meta-ExternalAgent|cohere-ai|DuckAssistBot) [NC]
+  RewriteRule .* - [E=AI_AGENT:1]
+
+  # Redirecionar /chat ou /chat.html para o subdomínio oficial https://chat.ozati.co
   RewriteRule ^chat(\.html)?$ https://chat.ozati.co/ [R=301,L,QSA]
+
+  # Markdown Content Negotiation (acceptmarkdown.com standard)
+  # When client sends Accept: text/markdown on root or index.html, route to index.php
+  RewriteCond %{HTTP:Accept} text/markdown [NC,OR]
+  RewriteCond %{HTTP:Accept} text/x-markdown [NC]
+  RewriteRule ^(index\.html)?$ index.php [L]
+
+  # Clean URLs: Map /about, /developers, /contact, /privacy to their .html files
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.*)$ $1.html [L]
+  RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.html [L]
 </IfModule>
 
-# 1. Desativar Cache para HTML (Atualização Imediata no Navegador)
+# 2. CORS & Vary: Accept Headers for Agents and Crawlers
 <IfModule mod_headers.c>
+  Header always set Vary "Accept"
+  Header always set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+  Header always set Access-Control-Allow-Headers "Accept, Authorization, Content-Type, User-Agent"
+
   <FilesMatch "\.(html|htm)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"
     Header set Expires 0
   </FilesMatch>
-</IfModule>
 
-# 2. Compressão Gzip & Brotli
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json image/svg+xml
-</IfModule>
+  <FilesMatch "(llms\.txt|llms-full\.txt|agent-instructions\.md)$">
+    Header always set Content-Type "text/markdown; charset=utf-8"
+    Header always set Vary "Accept"
+  </FilesMatch>
 
-# 3. Cache headers para ativos estáticos imutáveis
-<IfModule mod_expires.c>
-  ExpiresActive On
-  ExpiresDefault "access plus 1 month"
-  ExpiresByType text/html "access plus 0 seconds"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType image/x-icon "access plus 1 year"
-  ExpiresByType application/zip "access plus 1 month"
-  ExpiresByType application/x-msdownload "access plus 1 month"
-</IfModule>
+  <FilesMatch "\.json$">
+    Header always set Content-Type "application/json; charset=utf-8"
+  </FilesMatch>
 
-# 4. Cabeçalhos de Segurança
-<IfModule mod_headers.c>
+  <FilesMatch "\.xml$">
+    Header always set Content-Type "application/xml; charset=utf-8"
+  </FilesMatch>
+
+  # Security Headers
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set X-XSS-Protection "1; mode=block"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 3. Compressão Gzip & Brotli
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json image/svg+xml text/markdown
+</IfModule>
+
+# 4. Cache headers para ativos estáticos imutáveis
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/markdown "access plus 1 hour"
+  ExpiresByType text/plain "access plus 1 hour"
+  ExpiresByType application/json "access plus 1 hour"
+  ExpiresByType application/xml "access plus 1 hour"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 
 # 5. Forçar UTF-8

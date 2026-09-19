@@ -3,16 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nave AI — A IA que acompanha você | Ecossistema OZATI</title>
-  <meta name="description" content="O Nave é a camada de interface e conexão entre você e as IAs + APIs que você já utiliza. Chat web, extensão contextual de navegador e integrações de sistemas com OpenRouter BYOK.">
+  <title>Nave AI — Plataforma &amp; Interface de Inteligência Artificial | OZATI</title>
+  <meta name="description" content="Nave AI: A plataforma de IA da OZATI com arquitetura Local-First e BYOK. Conecte Claude 3.7, GPT-4o e DeepSeek R1 via Web Chat, extensão e servidores MCP.">
+  <meta name="keywords" content="Nave AI, Nave, OZATI Nave, Nave Chat, inteligência artificial, Claude 3.7, GPT-4o, DeepSeek R1, MCP, Model Context Protocol, BYOK, Local-First, OZATI Tecnologia">
+  <meta name="author" content="OZATI Tecnologia &amp; Inovação">
   <meta name="theme-color" content="#000000">
 
-  <!-- Open Graph -->
+  <!-- Link Canônico Obrigatório -->
+  <link rel="canonical" href="https://nave.ozati.co/">
+
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nave.ozati.co/">
-  <meta property="og:title" content="Nave AI — A IA que acompanha você">
-  <meta property="og:description" content="Converse com os melhores modelos de IA, conecte seus sistemas e trabalhe sem sair do lugar onde as coisas acontecem.">
-  <meta property="og:image" content="https://nave.ozati.co/nave.svg">
+  <meta property="og:site_name" content="Nave AI | OZATI">
+  <meta property="og:title" content="Nave AI — Plataforma &amp; Interface de Inteligência Artificial | OZATI">
+  <meta property="og:description" content="Nave AI: A plataforma de IA da OZATI com arquitetura Local-First e BYOK. Conecte Claude 3.7, GPT-4o e DeepSeek R1 via Web Chat, extensão e servidores MCP.">
+  <meta property="og:image" content="https://nave.ozati.co/icon.svg">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nave AI — Plataforma &amp; Interface de Inteligência Artificial | OZATI">
+  <meta name="twitter:description" content="Nave AI: A plataforma de IA da OZATI com arquitetura Local-First e BYOK. Conecte Claude 3.7, GPT-4o e DeepSeek R1 via Web Chat, extensão e servidores MCP.">
+  <meta name="twitter:image" content="https://nave.ozati.co/icon.svg">
+
+  <!-- JSON-LD Structured Data: SoftwareApplication + Organization (com contactPoint e address) + WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://nave.ozati.co/#software",
+        "name": "Nave AI",
+        "alternateName": ["Nave", "OZATI Nave", "Nave Chat", "Navegador Nave"],
+        "url": "https://nave.ozati.co/",
+        "description": "Plataforma de interface conversacional e ecossistema de inteligência artificial da OZATI. Opera em arquitetura Local-First com suporte a Claude 3.5/3.7, GPT-4o, DeepSeek V3/R1, Model Context Protocol (MCP) e chaves próprias (BYOK).",
+        "applicationCategory": "BusinessApplication, UtilitiesApplication",
+        "operatingSystem": "Web, Windows, macOS, Linux, ChromeOS",
+        "inLanguage": "pt-BR",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock"
+        },
+        "author": {
+          "@id": "https://ozati.co/#organization"
+        },
+        "publisher": {
+          "@id": "https://ozati.co/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://ozati.co/#organization",
+        "name": "OZATI",
+        "legalName": "OZATI Tecnologia & Inovação",
+        "url": "https://ozati.co",
+        "logo": "https://ozati.co/logo.svg",
+        "sameAs": [
+          "https://github.com/OZATI",
+          "https://www.instagram.com/ozati.co/",
+          "https://www.linkedin.com/company/ozati/",
+          "https://www.youtube.com/@Ozati"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "contato@ozati.co",
+            "availableLanguage": ["Portuguese", "English"]
+          }
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "São Paulo",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nave.ozati.co/#website",
+        "url": "https://nave.ozati.co/",
+        "name": "Nave AI",
+        "alternateName": "OZATI Nave",
+        "publisher": {
+          "@id": "https://ozati.co/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://chat.ozati.co/?prompt={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 
   <link rel="icon" type="image/svg+xml" href="/nave.svg">
   <link rel="shortcut icon" href="/favicon.ico">
@@ -1665,11 +1752,11 @@
       </a>
 
       <nav class="nav-links">
-        <a href="#bento">Tecnologia (Bento)</a>
+        <a href="#bento">Tecnologia</a>
         <a href="#produtos">Produtos</a>
-        <a href="#arquitetura">Arquitetura</a>
-        <a href="#contexto">Extensão</a>
-        <a href="#conexoes">Conexões</a>
+        <a href="/developers">Desenvolvedores</a>
+        <a href="/about">Sobre</a>
+        <a href="/contact">Contato</a>
         <a href="#precos">Preços</a>
       </nav>
 
@@ -2210,12 +2297,13 @@
         </div>
 
         <div class="footer-col">
-          <h4>Produto</h4>
+          <h4>Produto &amp; IA</h4>
           <ul>
             <li><a href="https://chat.ozati.co">Nave Chat</a></li>
             <li><a href="#produtos">Nave Extension</a></li>
-            <li><a href="#arquitetura">Nave Connect</a></li>
-            <li><a href="/wave.html" target="_blank">Shader WebGL</a></li>
+            <li><a href="/developers">Portal de Desenvolvedores</a></li>
+            <li><a href="/openapi.json">Especificação OpenAPI 3.1</a></li>
+            <li><a href="/llms.txt">Guia LLMs (llms.txt)</a></li>
           </ul>
         </div>
 
@@ -2224,22 +2312,26 @@
           <ul>
             <li><a href="https://ozati.co" target="_blank">OZATI Core</a></li>
             <li><a href="https://admin.ozati.co" target="_blank">OZATI CMS</a></li>
-            <li><a href="https://openrouter.ai" target="_blank">OpenRouter</a></li>
+            <li><a href="https://my.ozati.co" target="_blank">OZATI My</a></li>
+            <li><a href="/wave.html" target="_blank">Shader WebGL</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Contato</h4>
+          <h4>Empresa &amp; Confiança</h4>
           <ul>
-            <li><a href="mailto:contato@ozati.co">contato@ozati.co</a></li>
-            <li><a href="#precos">Implantar na Minha Empresa</a></li>
+            <li><a href="/about">Sobre o Nave AI</a></li>
+            <li><a href="/contact">Canais de Contato</a></li>
+            <li><a href="/privacy">Privacidade &amp; LGPD</a></li>
+            <li><a href="/agent-instructions.md">Instruções para Agentes</a></li>
+            <li><a href="/sitemap.xml">Mapa do Site (XML)</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div>&copy; 2026 OZATI. Todos os direitos reservados.</div>
-        <div>nave.ozati.co &bull; A IA que acompanha você</div>
+        <div>&copy; 2026 OZATI Tecnologia &amp; Inovação. Todos os direitos reservados.</div>
+        <div>nave.ozati.co &bull; Nave AI &bull; Plataforma Conectada de IA</div>
       </div>
     </div>
   </footer>

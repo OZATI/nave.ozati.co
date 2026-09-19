@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Desenvolvedor — Nave AI &amp; Protocolos de Agentes | OZATI</title>
+  <meta name="description" content="Documentação técnica, especificação OpenAPI 3.1, protocolo de Model Context Protocol (MCP) e integrações da plataforma Nave AI da OZATI.">
+  <link rel="canonical" href="https://nave.ozati.co/developers">
+  <link rel="icon" type="image/svg+xml" href="/nave.svg">
+
+  <meta property="og:title" content="Portal do Desenvolvedor — Nave AI &amp; Protocolos de Agentes | OZATI">
+  <meta property="og:description" content="Acesse especificações técnicas, OpenAPI 3.1, guias MCP e integração deep-link do Nave AI.">
+  <meta property="og:url" content="https://nave.ozati.co/developers">
+  <meta property="og:image" content="https://nave.ozati.co/icon.svg">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #000000;
+      --bg-surface: #0a0a0c;
+      --bg-card: #121215;
+      --border: #222226;
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .brand img, .brand svg { height: 22px; }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .btn-chat {
+      background: #fff;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn-chat:hover { opacity: 0.9; }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 24px 100px 24px;
+    }
+    .hero-tagline {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-green);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    p.lead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+      max-width: 750px;
+    }
+    .doc-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    p { margin-bottom: 16px; color: #d4d4d8; font-size: 15px; }
+    pre {
+      background: #000000;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #10b981;
+      margin: 16px 0;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+    }
+    ul { list-style: square; margin-left: 20px; margin-bottom: 16px; color: #d4d4d8; }
+    li { margin-bottom: 8px; }
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .resource-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .resource-card:hover {
+      border-color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.04);
+    }
+    .resource-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    .resource-card p { font-size: 12px; color: var(--text-muted); margin: 0; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--text); text-decoration: none; margin: 0 10px; }
+    footer a:hover { color: var(--accent-green); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="/" class="brand">
+        <svg width="22" height="22" viewBox="0 0 23 23" fill="none">
+          <path d="M16.9081 2.97708L19.6886 3.98211C19.443 5.21047 19.0856 6.26016 18.6166 7.13118C18.1476 7.97987 17.5893 8.71689 16.9416 9.34224C16.3162 9.94525 15.6015 10.4813 14.7975 10.9503C14.0158 11.397 13.156 11.8325 12.218 12.2568C11.0789 12.7928 10.0627 13.3623 9.16938 13.9654C8.29835 14.5684 7.68816 14.9485 7.01814 15.8418C6.34813 16.7128 5.60712 18.2311 5.11578 19.6605L2.43571 18.5885C2.86005 17.2708 3.37373 16.1429 3.97675 15.2049C4.6021 14.2669 5.27211 13.474 5.9868 12.8263C6.72381 12.1786 7.48317 11.6203 8.26485 11.1513C9.04654 10.6823 9.81706 10.2468 10.5764 9.84475C11.4028 9.4204 12.1509 9.01839 12.821 8.63872C13.5133 8.23671 14.1196 7.90963 14.6556 7.44062C15.2139 6.9716 15.6797 6.2825 16.037 5.59015C16.4167 4.8978 16.7071 4.02677 16.9081 2.97708Z" fill="white"/>
+          <path d="M1.62878 7.47567L1.98987 4.54117C3.2421 4.50735 4.34499 4.62215 5.29854 4.88559C6.23031 5.15399 7.0731 5.53433 7.82689 6.02662C8.55394 6.50211 9.23555 7.0796 9.87172 7.7591C10.4811 8.42179 11.0971 9.16318 11.7195 9.98326C12.4955 10.9745 13.2769 11.8384 14.0636 12.5752C14.8453 13.2902 15.3516 13.8005 16.3717 14.255C17.37 14.7144 19.0151 15.0989 20.5179 15.2599L20.0692 18.1113C18.6901 17.9908 17.4762 17.741 16.4275 17.3618C15.3738 16.9609 14.4518 16.4841 13.6613 15.9315C12.8659 15.357 12.1525 14.741 11.5213 14.0832C10.8901 13.4255 10.2941 12.7712 9.73318 12.1204C9.1356 11.4092 8.57718 10.7692 8.05793 10.2005C7.51194 9.61493 7.05816 9.09666 6.48163 8.67845C5.90013 8.23847 5.12466 7.93771 4.37015 7.74339C3.61067 7.5273 2.69688 7.43805 1.62878 7.47567Z" fill="white"/>
+        </svg>
+        <span>Nave AI</span>
+        <span class="badge">DEV PORTAL</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Início</a>
+        <a href="/about">Sobre</a>
+        <a href="/contact">Contato</a>
+        <a href="/privacy">Privacidade</a>
+        <a href="https://chat.ozati.co" class="btn-chat">Abrir Chat &rarr;</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <span class="hero-tagline">Recursos para Desenvolvedores &amp; Agentes</span>
+    <h1>Protocolos de Integração do Nave AI</h1>
+    <p class="lead">
+      Documentação completa para conectar agentes de IA autônomos, sistemas externos e fluxos automatizados ao ecossistema Nave AI e OZATI.
+    </p>
+
+    <!-- Seção 1: Deep Linking -->
+    <section class="doc-section">
+      <h2>1. Protocolo de Chamada por Deep Link (URL Params)</h2>
+      <p>
+        Agentes de IA e sistemas web podem invocar o <strong>Nave Chat</strong> enviando tarefas ou prompts pré-formatados diretamente pela URL.
+      </p>
+      <pre>https://chat.ozati.co/?prompt={encoded_prompt}&amp;send=1&amp;model={model_id}</pre>
+      <ul>
+        <li><code>prompt</code>: Mensagem, instrução ou pergunta codificada em URI.</li>
+        <li><code>send=1</code>: Força a submissão e o início do streaming imediato da resposta.</li>
+        <li><code>model</code>: Modelo específico (ex: <code>anthropic/claude-3.7-sonnet</code>, <code>openai/gpt-4o</code>, <code>deepseek/deepseek-r1</code>).</li>
+        <li><code>system</code>: Prompt de sistema customizado para instruir o comportamento do modelo.</li>
+      </ul>
+    </section>
+
+    <!-- Seção 2: Model Context Protocol (MCP) -->
+    <section class="doc-section" id="mcp">
+      <h2>2. Model Context Protocol (MCP)</h2>
+      <p>
+        O Nave AI implementa suporte ao padrão aberto <strong>Model Context Protocol</strong> da Anthropic. Isso permite conectar modelos de fronteira com ferramentas locais de terminal, bancos de dados corporativos e APIs do ecossistema OZATI.
+      </p>
+      <pre>{
+  "mcpServers": {
+    "ozati-nave": {
+      "command": "npx",
+      "args": ["-y", "@ozati/nave-mcp-server"],
+      "env": {
+        "NAVE_ENDPOINT": "https://chat.ozati.co"
+      }
+    }
+  }
+}</pre>
+      <p>
+        Ferramentas padrão disponibilizadas via servidor MCP:
+      </p>
+      <ul>
+        <li><code>nave_web_search</code>: Busca na web em tempo real e extração de contexto limpo.</li>
+        <li><code>nave_summarize_url</code>: Processamento e síntese profunda de páginas remotas.</li>
+        <li><code>nave_clinic_kiosk</code>: Consulta a agendamentos e retornos no módulo hospitalar OZATI.</li>
+      </ul>
+    </section>
+
+    <!-- Seção 3: Arquivos de Máquina -->
+    <section class="doc-section">
+      <h2>3. Recursos de Máquina para LLMs &amp; Agentes</h2>
+      <p>
+        Disponibilizamos endpoints padronizados para agentes de busca e raciocínio programático:
+      </p>
+      <div class="resource-grid">
+        <a href="/openapi.json" class="resource-card">
+          <h3>openapi.json</h3>
+          <p>Especificação OpenAPI 3.1.0 para leitura por ferramentas de automação.</p>
+        </a>
+        <a href="/llms.txt" class="resource-card">
+          <h3>llms.txt</h3>
+          <p>Manifesto com diretrizes "When to Use This" no padrão llmstxt.org.</p>
+        </a>
+        <a href="/llms-full.txt" class="resource-card">
+          <h3>llms-full.txt</h3>
+          <p>Documentação técnica integral consumível via Accept: text/markdown.</p>
+        </a>
+        <a href="/agent-instructions.md" class="resource-card">
+          <h3>agent-instructions.md</h3>
+          <p>Regras e árvore de decisão para agentes autônomos de IA.</p>
+        </a>
+        <a href="/sitemap.xml" class="resource-card">
+          <h3>sitemap.xml</h3>
+          <p>Índice completo de rotas e recursos indexáveis do subdomínio.</p>
+        </a>
+        <a href="/robots.txt" class="resource-card">
+          <h3>robots.txt</h3>
+          <p>Declaração de liberação irrestrita para rastreadores e bots de IA.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Seção 4: Segurança Local-First -->
+    <section class="doc-section">
+      <h2>4. Segurança e Arquitetura Local-First</h2>
+      <p>
+        Ao integrar com o Nave AI, desenvolvedores contam com garantias estruturais de conformidade:
+      </p>
+      <ul>
+        <li><strong>Chaves Próprias (BYOK):</strong> As chaves de API nunca são enviadas aos nossos servidores; a conexão parte do navegador diretamente para a API dos provedores.</li>
+        <li><strong>Sem Telemetria Oculta:</strong> Código estático auditável sem rastreadores de terceiros ou pixels publicitários.</li>
+        <li><strong>CORS Aberto:</strong> Cabeçalhos <code>Access-Control-Allow-Origin: *</code> habilitados para consultas de recursos públicos por agentes.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 OZATI Tecnologia &amp; Inovação. Todos os direitos reservados.</p>
+    <p style="margin-top: 8px;">
+      <a href="/">Nave AI</a> |
+      <a href="/about">Sobre</a> |
+      <a href="/contact">Contato</a> |
+      <a href="/privacy">Privacidade</a> |
+      <a href="https://ozati.co" target="_blank">OZATI.co</a>
+    </p>
+  </footer>
+
+</body>
+</html>

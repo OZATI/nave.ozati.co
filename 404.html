@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Página Não Encontrada | Nave AI</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/svg+xml" href="/nave.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000;
+      --border: #222226;
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --accent-green: #10b981;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 24px;
+      margin: 0;
+    }
+    .code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--accent-green);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 12px; }
+    p { color: var(--text-muted); max-width: 500px; margin-bottom: 28px; font-size: 15px; }
+    .links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-main { background: #fff; color: #000; }
+    .btn-sec { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="code">404</div>
+  <h1>Página Não Encontrada</h1>
+  <p>O recurso que você procurava não existe ou foi realocado. Utilize os links abaixo para navegar pelo Nave AI.</p>
+  <div class="links">
+    <a href="/" class="btn btn-main">Voltar ao Início</a>
+    <a href="https://chat.ozati.co" class="btn btn-sec">Abrir Nave Chat</a>
+    <a href="/developers" class="btn btn-sec">Desenvolvedores</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Nave AI API & Agent Protocols",
+    "version": "1.0.0",
+    "description": "Especificação pública de endpoints e protocolos de integração para agentes de IA e desenvolvedores da plataforma Nave AI, desenvolvida pela OZATI Tecnologia & Inovação.",
+    "contact": {
+      "name": "Suporte Técnico OZATI",
+      "email": "contato@ozati.co",
+      "url": "https://nave.ozati.co/developers"
+    },
+    "license": {
+      "name": "Proprietary / Open Access for Clients",
+      "url": "https://nave.ozati.co/privacy"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://chat.ozati.co",
+      "description": "Servidor de Produção do Nave Chat (Interface Web & Deep Linking)"
+    },
+    {
+      "url": "https://nave.ozati.co",
+      "description": "Portal Institucional, Documentações e Recursos para Agentes"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Invocar Nave Chat com Deep Linking",
+        "description": "Abre a interface conversacional do Nave Chat com parâmetros pré-configurados de prompt, seleção de modelo de IA e disparo imediato.",
+        "operationId": "launchNaveChat",
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "description": "Mensagem ou comando inicial a ser preenchido na caixa de texto do chat.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "send",
+            "in": "query",
+            "description": "Se definido como 1 ou true, executa o envio imediato da mensagem sem exigir clique manual do usuário.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["1", "true"]
+            }
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "description": "Identificador do modelo de linguagem preferencial (OpenRouter / Direct Provider ID).",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "examples": [
+                "anthropic/claude-3.7-sonnet",
+                "anthropic/claude-3.5-sonnet",
+                "openai/gpt-4o",
+                "deepseek/deepseek-chat",
+                "deepseek/deepseek-r1",
+                "google/gemini-2.0-flash-exp"
+              ]
+            }
+          },
+          {
+            "name": "system",
+            "in": "query",
+            "description": "Prompt de sistema para definir o papel ou regras da persona de IA na sessão.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aplicação Nave Chat carregada com os parâmetros processados com sucesso.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/llms.txt": {
+      "get": {
+        "summary": "Manifesto LLMs para Agentes de IA",
+        "description": "Arquivo estruturado conforme especificação llmstxt.org detalhando quando utilizar o Nave AI e suas capacidades.",
+        "operationId": "getLlmsTxt",
+        "responses": {
+          "200": {
+            "description": "Manifesto retornado em formato texto simples markdown.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent-instructions.md": {
+      "get": {
+        "summary": "Instruções Técnicas para Agentes Autônomos",
+        "description": "Documento exaustivo com casos de uso e árvore de decisão para agentes autônomos.",
+        "operationId": "getAgentInstructions",
+        "responses": {
+          "200": {
+            "description": "Documentação técnica retornada em markdown.",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
