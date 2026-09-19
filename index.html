@@ -24,6 +24,7 @@
 
   <style>
     :root {
+      color-scheme: dark;
       --bg: #000000;
       --bg-surface: #0a0a0a;
       --bg-card: #111111;
@@ -60,6 +61,9 @@
       scroll-behavior: smooth;
       background-color: var(--bg);
       color: var(--text);
+      color-scheme: dark;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -884,6 +888,19 @@
       font-size: 0.8rem;
       font-family: var(--font-mono);
     }
+
+    /* Accessibility: Respect Reduced Motion Preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .pulse-dot {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -953,24 +970,28 @@
           <textarea
             id="heroInput"
             class="hero-prompt-textarea"
-            placeholder="Digite uma pergunta, consulte prontuários do Clinic Kiosk ou conecte uma API..."
+            placeholder="Digite uma pergunta, compare respostas de IAs ou envie comandos…"
             rows="3"
+            aria-label="Mensagem ou comando para o Nave Chat"
           ></textarea>
 
           <div class="hero-prompt-toolbar">
             <div class="hero-prompt-chips">
+              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Resuma os pontos-chave desta página e liste 3 ações práticas.')">
+                <span class="chip-dot"></span> ⚡ Resumir página
+              </button>
+              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Compare a resposta do Claude 3.5 Sonnet com o GPT-4o sobre arquitetura local-first.')">
+                <span class="chip-dot"></span> ⚖️ Comparar IAs
+              </button>
+              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Como conectar as APIs e bancos de dados dos meus sistemas ao Nave via MCP?')">
+                <span class="chip-dot"></span> 🔌 Conectar APIs &amp; MCP
+              </button>
               <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Quantos pacientes precisam de retorno hoje no Clinic Kiosk?')">
-                <span class="chip-dot"></span> Pacientes hoje
-              </button>
-              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Como conectar as APIs dos meus sistemas ao Nave?')">
-                <span class="chip-dot"></span> Conectar APIs
-              </button>
-              <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Explique o modelo BYOK com OpenRouter no Nave')">
-                <span class="chip-dot"></span> BYOK OpenRouter
+                <span class="chip-dot"></span> 🏥 Clinic Kiosk
               </button>
             </div>
 
-            <button type="submit" class="btn-hero-send" title="Conversar com Nave Chat (Enter)">
+            <button type="submit" class="btn-hero-send" title="Conversar com Nave Chat (Enter)" aria-label="Enviar prompt para o Nave Chat">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="19" x2="12" y2="5"/>
                 <polyline points="5 12 12 5 19 12"/>
@@ -980,8 +1001,8 @@
         </form>
 
         <div class="hero-prompt-footer-hint">
-          <span>Pressione Enter para abrir no Nave Chat &bull; Claude 3.5, GPT-4o, DeepSeek</span>
-          <span>Sem cadastro obrigatório</span>
+          <span>Pressione <kbd style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 10px;">Enter ↵</kbd> para abrir no Nave Chat &bull; Claude 3.5, GPT-4o &amp; DeepSeek V3</span>
+          <span style="color: #10b981; font-weight: 500;">✓ 100% Grátis &bull; Sem cadastro obrigatório &bull; Dados privados no seu navegador</span>
         </div>
       </div>
 
@@ -1393,12 +1414,16 @@
         mouseY = (r.height - (e.clientY - r.top)) * (canvas.height / r.height);
       });
 
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
       function loop(t) {
         gl.uniform2f(uRes, canvas.width, canvas.height);
         gl.uniform1f(uTime, (t - t0) * 0.001);
         gl.uniform2f(uMouse, mouseX, mouseY);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
-        requestAnimationFrame(loop);
+        if (!prefersReduced.matches) {
+          requestAnimationFrame(loop);
+        }
       }
       requestAnimationFrame(loop);
     })();
