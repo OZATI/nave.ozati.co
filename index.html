@@ -229,12 +229,23 @@
       opacity: 0.88;
     }
 
+    @keyframes brandLogoSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
     .brand-logo-svg {
       height: 22px;
       width: 22px;
       display: block;
       fill: #ffffff;
       flex-shrink: 0;
+      animation: brandLogoSpin 8s linear infinite;
+      transform-origin: center center;
     }
 
     .nave-wordmark-animated {
