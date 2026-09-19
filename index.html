@@ -336,132 +336,138 @@
       border-color: var(--border-hover);
     }
 
-    /* Hero Interactive Prompt Card - 720px Card (120px initial, max 400px) */
-    .hero-prompt-container {
-      position: relative;
+    /* Hero Interactive Prompt Card - 720px Card */
+    .hero-prompt-wrapper {
       max-width: 720px;
       min-width: 300px;
       width: 100%;
-      margin: 0 auto 28px auto;
+      margin: 0 auto 32px auto;
       text-align: left;
       z-index: 2;
+      position: relative;
     }
 
-    /* Utility classes matching the user's specification */
-    .min-h-\[120px\] { min-height: 120px; }
-    .w-full { width: 100%; }
-    .min-w-\[300px\] { min-width: 300px; }
-    .max-w-\[720px\] { max-width: 720px; }
-    .max-h-\[400px\] { max-height: 400px; }
-    .overflow-y-auto { overflow-y: auto; }
-    .rounded-2xl { border-radius: 16px; }
-    .pb-\[40px\] { padding-bottom: 46px; }
-    .transition-colors { transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
-
-    .textarea-custom {
+    .hero-prompt-card {
       width: 100%;
-      min-width: 300px;
-      max-width: 720px;
-      min-height: 120px;
-      max-height: 400px;
-      height: 120px;
-      background: rgba(18, 18, 20, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 18px 48px 18px;
+      background: rgba(18, 18, 22, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 18px 18px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .hero-prompt-card:focus-within {
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12);
+      background: rgba(22, 22, 26, 0.96);
+    }
+
+    .hero-prompt-textarea {
+      width: 100%;
+      min-height: 64px;
+      max-height: 240px;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
       color: #ffffff;
       font-family: var(--font-sans);
       font-size: 15px;
       line-height: 1.55;
-      resize: none;
-      outline: none;
-      overflow-y: auto;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      padding: 0;
+      margin: 0;
       box-sizing: border-box;
-      display: block;
+      overflow-y: auto;
     }
 
-    .textarea-custom:focus {
-      border-color: #4a4a52;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
-      background: rgba(22, 22, 26, 0.95);
-    }
-
-    .textarea-custom::placeholder {
-      color: var(--text-dim);
+    .hero-prompt-textarea::placeholder {
+      color: #666672;
     }
 
     .hero-prompt-toolbar {
-      position: absolute;
-      bottom: 12px;
-      left: 14px;
-      right: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      pointer-events: none;
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .hero-prompt-chips {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       overflow-x: auto;
-      pointer-events: auto;
-      max-width: calc(100% - 46px);
+      flex-wrap: wrap;
     }
 
     .hero-prompt-chip {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
+      color: #a1a1aa;
       font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      padding: 5px 12px;
+      border-radius: 9999px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       white-space: nowrap;
       transition: all 0.15s ease;
+    }
+
+    .hero-prompt-chip .chip-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      display: inline-block;
     }
 
     .hero-prompt-chip:hover {
       color: #ffffff;
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.22);
+      transform: translateY(-1px);
     }
 
     .btn-hero-send {
       background: #ffffff;
       color: #000000;
       border: none;
-      width: 34px;
-      height: 34px;
-      border-radius: var(--radius-sm);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: all 0.15s ease;
-      pointer-events: auto;
       flex-shrink: 0;
     }
 
     .btn-hero-send:hover {
       background: #e4e4e7;
-      transform: scale(1.04);
+      transform: scale(1.08);
     }
 
     .hero-prompt-footer-hint {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
-      color: var(--text-dim);
+      font-size: 11.5px;
+      color: #71717a;
       font-family: var(--font-mono);
-      margin-top: 8px;
-      padding: 0 6px;
+      margin-top: 10px;
+      padding: 0 8px;
       max-width: 720px;
     }
 
@@ -941,26 +947,26 @@
         <span class="platform-pill"><span class="pill-dot"></span>WhatsApp Gateway</span>
       </div>
 
-      <!-- Interactive Hero Prompt Card - Modern 720px Card -->
-      <div class="hero-prompt-container">
-        <form id="heroPromptForm" onsubmit="handleHeroSubmit(event)">
+      <!-- Interactive Hero Prompt Card -->
+      <div class="hero-prompt-wrapper">
+        <form id="heroPromptForm" class="hero-prompt-card" onsubmit="handleHeroSubmit(event)">
           <textarea
             id="heroInput"
-            class="min-h-[120px] w-full min-w-[300px] max-w-[720px] max-h-[400px] overflow-y-auto textarea-custom rounded-2xl pb-[40px] transition-colors"
-            style="height: 120px;"
+            class="hero-prompt-textarea"
             placeholder="Digite uma pergunta, consulte prontuários do Clinic Kiosk ou conecte uma API..."
+            rows="3"
           ></textarea>
 
           <div class="hero-prompt-toolbar">
             <div class="hero-prompt-chips">
               <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Quantos pacientes precisam de retorno hoje no Clinic Kiosk?')">
-                Pacientes hoje
+                <span class="chip-dot"></span> Pacientes hoje
               </button>
               <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Como conectar as APIs dos meus sistemas ao Nave?')">
-                Conectar APIs
+                <span class="chip-dot"></span> Conectar APIs
               </button>
               <button type="button" class="hero-prompt-chip" onclick="applyHeroPrompt('Explique o modelo BYOK com OpenRouter no Nave')">
-                BYOK OpenRouter
+                <span class="chip-dot"></span> BYOK OpenRouter
               </button>
             </div>
 
@@ -1401,9 +1407,8 @@
     const heroInput = document.getElementById('heroInput');
     if (heroInput) {
       heroInput.addEventListener('input', () => {
-        heroInput.style.height = '120px';
-        const newHeight = Math.max(120, Math.min(heroInput.scrollHeight, 400));
-        heroInput.style.height = newHeight + 'px';
+        heroInput.style.height = 'auto';
+        heroInput.style.height = Math.max(64, Math.min(heroInput.scrollHeight, 240)) + 'px';
       });
 
       heroInput.addEventListener('keydown', (e) => {
@@ -1417,9 +1422,8 @@
     function applyHeroPrompt(text) {
       if (heroInput) {
         heroInput.value = text;
-        heroInput.style.height = '120px';
-        const newHeight = Math.max(120, Math.min(heroInput.scrollHeight, 400));
-        heroInput.style.height = newHeight + 'px';
+        heroInput.style.height = 'auto';
+        heroInput.style.height = Math.max(64, Math.min(heroInput.scrollHeight, 240)) + 'px';
         heroInput.focus();
       }
     }
