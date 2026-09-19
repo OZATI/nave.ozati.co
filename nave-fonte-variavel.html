@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nave</title>
+<style>
+/* ─────────────────────────────────────────────────────────────
+   FONTE  Nave Wdth — uma fonte variável com um eixo de largura (wdth)
+   100 = BioRhyme · 175 = BioRhyme Expanded. Só tem as letras n a v e.
+   Derivada da BioRhyme / BioRhyme Expanded (SIL OFL).
+   No site, troque o data-URI por:  url("NaveWdth.woff2")
+   ───────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Nave Wdth";
+  font-weight: 400;
+  font-stretch: 100% 175%;
+  font-display: block;
+  src: url(data:font/woff2;base64,d09GMgABAAAAAAW8AA4AAAAACFQAAAVgAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0hWQVI8BmA/U1RBVBwATC8kCoU8hGUwhCoBNgIkAxQLDAAEIAWBDQcsG/0GAB4FbuwMO1FRKanifOt4PP27e00ndzI7Fps/xWz7IpP0C+DhbffOfSOb3WyKqCpVUJLQlSpU3eQidPofILTl/F+TLwv4DuTEDvnT3SKpAivA51Fks2obzYb3hnujCj9gn85ZVkesQRHiN9x4/QABAFhTaQRgTEiRQJAmfuBsUELA9v4HWRzAGcCRgRZBqQMhTUv92kt/dgBGWBHAQvZwAwDADQBC+vCMVXS06dMB7RQA5neyOEkmzgpD+ghpqa1u+v3/k9/kGs02NTzfKHMEWQPQ3ycFbUBfu/kCCLfBEIAxgLsAuEJjZdQcwtAgW5hloyeXR1tbcSOla5LhJCFJKtSJRpPFRSDr0AyMGyP5IDSBgbZ5MPgSs3fqEnnJZceJfS6LRi7HkSNxpBSySUrYJ8XsmhS1Q4gSVEtF5/M67WlRuVcUQZJUOwRI7s3ivtmirmbECLggqFZMOnXumAu//fD500Y6sesgo46djQbsFTDuu48Oa1gGr5MCDghZJ4ScU1LKIclTFNWiTrv/uk7nwkvXpBhJUglC6QFBcBO8oOla+Yv0atRd18Wu1olnL9ovbTpwRvASJIVXjKO6TukaFdPVv3tZ156xuU2pyoGDB2pHBuaVDw1Xtw9e2CGgic/he206tcl+uTnfg3d8bM4H8RB5zj2VrR7+dpDVwtnW2csN+5aEOiWbOIdUhwSbVPnbJ2a2b69xOLmz9sRxreV+jW2F50rronkvxwVkGv6YE7P+uiuheunif8+nj9MvlW9WTEieQhvl6amKTysKqrK16M2udSyMdohyvDglv8B0R/obpZuHVT9pwRsXJSy0hZLR2bPfreSRkcO3ObXuE8CC+H8z5oPBJjOe8FcOQvo0pcQ/vWRW+8Ti1AHyqsmtY2q7OXd0LHKdH1jBSmTL7bP9czo753Al6xcEZlzP964uUKzFQusi66na4ITQevv2tkzlOz8iKyxtslZpU6hYRUrLEsupyk0fn4ZkSDm+g1dnyLO5L7aHnt6+9TrD9EopLXcBAABAASPJDScBeBwLAGAKTEFZGoxA0E+mANC6+kg/mRMLYdmsnnVjnVlb1pq1YhnMmn7TC7pH9+uZn6TlNIrCSB8fIo9jsQumYzDaw2cP4AKshJlc54yMzKxBJfAEHbEMD+APcqfp9IzeUBMh7sJ1WA9/8NSqVZsyaILfqQqbcS1+oiX0LgUW47fZS16JbVAO66hrt645sBktsDfuxt0ko8YRaazNyFR7vS9fv+opbKwtuU+Pb9/+6+Gf0rrH0MHdW2dEeJpw/758fPvy2cM7dx88evuHDBWe4TEW91/9tHKOyc3xlz+7LL60A3mx+PAN9OAH396nH0jh6WLB6O/n0W9DeR5XZhNG3Y5m0AdaTN0pHT/icVyEkfDPYdKohmngNjIMwfF4EC+SLfWna/SBWTAH+med4CGaQ4lkivexF0aiEWyi1uqUOpgOl1GO/bAZr5AfqWgE3YMOxsADzMGVeAwvkCm1o330iT7TN9pOxfgCm7EZy2HX/R9LYefg5GLG/v38/ObJpZOHJWP5jzcPjqyYnfm/p2pabTd68+VHLz7JbHzKGjp3Lo2m8+cvPvvwR8/A2NzUKzLM09HGzODfmzsndh+89ODR67+jIQAExzVZcxrMkr7qM70rAADPrjduq7sp/gfcHHYaABgCAIDgo+vh7giSogcgFeLyC4xPiG3QUOuDIlpASaTMqcLVITkiV7xeFhkAWyF6DEYh4JhjMGYjlmygEFO+2xDAUPTWsl9bN22bPh3+o0dpOy6GYi3105YbrTb6gF7OLdrrq4uWetHq6GuCKJJTWiZLlTwAAA==) format("woff2");
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COMPONENTE  .nave
+   ───────────────────────────────────────────────────────────── */
+
+/* --p é o "estado" único do logo: 0 = a normal / e expandido,
+   1 = a expandido / e normal. Tudo o mais deriva dele. */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+.nave {
+  --nave-duration: 2.6s;      /* tempo de ir de um estado ao outro */
+
+  font-family: "Nave Wdth", serif;
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1;
+  text-rendering: geometricPrecision;   /* posicionamento sub-pixel: largura exata em qualquer quadro */
+  white-space: nowrap;
+  animation: nave-breathe var(--nave-duration) cubic-bezier(.65, 0, .35, 1) infinite alternate;
+}
+
+/* a e e são a MESMA letra em eixos opostos: quando uma abre, a outra fecha.
+   A fonte foi desenhada para que  largura(a) + largura(e)  seja sempre a mesma. */
+.nave__a { font-variation-settings: "wdth" calc(100 + 75 * var(--p)); }
+.nave__e { font-variation-settings: "wdth" calc(100 + 75 * (1 - var(--p))); }
+
+@keyframes nave-breathe {
+  from { --p: 1; }
+  to   { --p: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nave { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DEMO (não precisa levar para o site)
+   ───────────────────────────────────────────────────────────── */
+html, body { height: 100%; margin: 0; }
+body { display: grid; place-items: center; background: #1e1e1e; color: #fff; }
+.nave { font-size: clamp(3.5rem, 15vw, 10rem); }
+.demo-frame { outline: 1px dashed rgba(255, 255, 255, .22); outline-offset: .12em; }
+</style>
+</head>
+<body>
+
+<div class="nave demo-frame">n<span class="nave__a">a</span>v<span class="nave__e">e</span></div>
+
+</body>
+</html>
