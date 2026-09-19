@@ -1,20 +1,56 @@
-import React, { useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+
+export const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 0,
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowSize;
+};
 
 export interface BloimAnimationBackgroundProps {
   projectId?: string;
   className?: string;
+  width?: number | string;
+  height?: number | string;
+  production?: boolean;
+  opacity?: number;
   children?: React.ReactNode;
 }
 
 /**
- * Bloim Animation Background component (Serge Bunas / 21st.dev)
- * Interactive WebGL Bloom & Particle Shader background powered by Unicorn Studio.
+ * Bloim Animation Background Component (Unicorn Studio WebGL Shader)
+ * Project ID: 9tVO0xGS8DIar1DF4Sqc
  */
-export const BloimAnimationBackground: React.FC<BloimAnimationBackgroundProps> = ({
-  projectId = "p7Ff6pfTrb5Gs59C7nLC",
-  className = "w-full h-full",
+export const BloimAnimationBackground = ({
+  projectId = "9tVO0xGS8DIar1DF4Sqc",
+  className,
+  width: customWidth,
+  height: customHeight,
+  production = true,
+  opacity,
   children,
-}) => {
+}: BloimAnimationBackgroundProps) => {
+  const windowSize = useWindowSize();
+  const width = customWidth ?? windowSize.width;
+  const height = customHeight ?? windowSize.height;
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -23,7 +59,6 @@ export const BloimAnimationBackground: React.FC<BloimAnimationBackgroundProps> =
       if (win.UnicornStudio) {
         try {
           win.UnicornStudio.init();
-          win.UnicornStudio.isInitialized = true;
         } catch (e) {
           console.warn("Bloim Animation init warning:", e);
         }
@@ -32,7 +67,6 @@ export const BloimAnimationBackground: React.FC<BloimAnimationBackgroundProps> =
 
     const win = window as any;
     if (!win.UnicornStudio) {
-      win.UnicornStudio = { isInitialized: false };
       const script = document.createElement("script");
       script.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js";
       script.async = true;
@@ -44,16 +78,24 @@ export const BloimAnimationBackground: React.FC<BloimAnimationBackgroundProps> =
   }, [projectId]);
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
-      {/* Container do Shader WebGL do Bloim */}
-      <div
-        data-us-project={projectId}
-        className="absolute inset-0 w-full h-full pointer-events-auto"
-        style={{ minHeight: "100%", minWidth: "100%" }}
+    <div
+      className={cn("relative flex flex-col items-center overflow-hidden", className)}
+      style={opacity !== undefined ? { opacity } : undefined}
+    >
+      <iframe
+        src={`https://www.unicorn.studio/embed/${projectId}?production=${production ? "1" : "0"}`}
+        width={width}
+        height={height}
+        className="w-full h-full border-0 absolute inset-0 pointer-events-auto"
+        title="Bloim Animation Background"
+        loading="lazy"
+        allow="autoplay"
       />
-      {children && <div className="relative z-10">{children}</div>}
+      {children && <div className="relative z-10 w-full h-full">{children}</div>}
     </div>
   );
 };
+
+export const Component = BloimAnimationBackground;
 
 export default BloimAnimationBackground;

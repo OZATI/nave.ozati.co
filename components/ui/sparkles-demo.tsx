@@ -1,16 +1,6 @@
 "use client";
-import ModernLoginSignup from "@/components/ui/modern-login-signup";
 import { SparklesCore } from "@/components/ui/sparkles";
-import { NaveLogo } from "@/components/NaveLogo";
 
-// Demo do Login / Cadastro
-export function DemoOne() {
-  return <ModernLoginSignup />;
-}
-
-export default DemoOne;
-
-// Demos do Sparkles
 export function SparklesPreview() {
   return (
     <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
@@ -35,7 +25,7 @@ export function SparklesPreview() {
         />
 
         {/* Radial Gradient to prevent sharp edges */}
-        <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]" />
+        <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
       </div>
     </div>
   );
@@ -89,37 +79,3 @@ export function SparklesPreviewColorful() {
     </div>
   );
 }
-
-// Demonstração especial com a Logo Nave
-export function NaveSparklesHero() {
-  return (
-    <div className="h-[30rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-zinc-800 relative">
-      <div className="w-full absolute inset-0 h-full">
-        <SparklesCore
-          id="nave-sparkles"
-          background="transparent"
-          minSize={0.4}
-          maxSize={1.2}
-          particleDensity={150}
-          className="w-full h-full"
-          particleColor="#10b981"
-          speed={1.5}
-        />
-      </div>
-
-      <div className="relative z-20 flex flex-col items-center gap-4 text-center px-4">
-        <NaveLogo size={42} className="text-white hover:scale-105 transition-transform" />
-        <p className="text-xs font-mono uppercase tracking-widest text-emerald-400">
-          Velocidade Máxima • Chromium 151
-        </p>
-      </div>
-
-      <div className="w-[30rem] h-20 relative -mt-4">
-        <div className="absolute inset-x-12 top-0 bg-gradient-to-r from-transparent via-emerald-500 to-transparent h-[2px] w-3/4 blur-sm" />
-        <div className="absolute inset-x-12 top-0 bg-gradient-to-r from-transparent via-emerald-400 to-transparent h-px w-3/4" />
-      </div>
-    </div>
-  );
-}
-
-export { default as ComposeDemo } from "./compose-demo";
