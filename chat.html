@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
-    // Redirecionamento instantâneo para o subdomínio oficial chat.ozati.co preservando query params e hash
+    // Garantir redirecionamento imediato para o subdomínio oficial https://chat.ozati.co
     (function() {
-      if (window.location.hostname === 'nave.ozati.co' || window.location.pathname.endsWith('chat.html')) {
+      var h = window.location.hostname;
+      if (h && h.indexOf('ozati.co') !== -1 && h !== 'chat.ozati.co') {
         window.location.replace('https://chat.ozati.co/' + window.location.search + window.location.hash);
       }
     })();
