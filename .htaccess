@@ -96,3 +96,9 @@ ErrorDocument 404 /404.php
 
 # 5. Forçar UTF-8
 AddDefaultCharset UTF-8
+
+# 6. Forçar inclusão de Accept no cabeçalho Vary após compressão
+<IfModule mod_headers.c>
+  Header always merge Vary "Accept"
+  Header merge Vary "Accept"
+</IfModule>
