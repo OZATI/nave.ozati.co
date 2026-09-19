@@ -18,6 +18,7 @@
     :root {
       --bg: #000000;
       --bg-surface: #0a0a0c;
+      --bg-sidebar: #09090b;
       --bg-card: #121215;
       --bg-card-hover: #18181c;
       --border: #222226;
@@ -31,6 +32,7 @@
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 16px;
+      --sidebar-width: 270px;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -49,8 +51,462 @@
       -webkit-font-smoothing: antialiased;
       height: 100vh;
       overflow: hidden;
+    }
+
+    /* Overall App Layout */
+    .app-layout {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* --- Gemini-Style Sidebar --- */
+    .chat-sidebar {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
+      transition: width 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 30;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .chat-sidebar.collapsed {
+      width: 0;
+      border-right: 1px solid transparent;
+    }
+
+    .sidebar-inner {
+      width: var(--sidebar-width);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    /* Sidebar Top Header */
+    .sidebar-top {
+      height: 60px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-group .brand-logo-svg {
+      height: 20px;
+      width: 20px;
+      fill: #fff;
+      flex-shrink: 0;
+    }
+
+    .brand-group .brand-logo-wordmark {
+      height: 11px;
+      width: auto;
+      fill: #ffffff;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 1px 5px;
+      border-radius: var(--radius-sm);
+    }
+
+    .sidebar-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    /* Quick Action Area */
+    .sidebar-actions {
+      padding: 14px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-new-chat {
+      background: #141418;
+      border: 1px solid #27272a;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-new-chat:hover {
+      background: #1c1c22;
+      border-color: #3f3f46;
+      transform: translateY(-1px);
+    }
+
+    .btn-new-chat svg {
+      color: var(--accent-green);
+      flex-shrink: 0;
+    }
+
+    /* Search Box */
+    .sidebar-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar-search-box svg.search-icon {
+      position: absolute;
+      left: 11px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .sidebar-search-input {
+      width: 100%;
+      background: #111114;
+      border: 1px solid #222226;
+      color: var(--text);
+      font-size: 12.5px;
+      padding: 7px 30px 7px 32px;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .sidebar-search-input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .sidebar-search-input:focus {
+      border-color: #3b82f6;
+      background: #141418;
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 8px;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 14px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+    }
+
+    .search-clear-btn:hover {
+      color: #fff;
+    }
+
+    /* Recents Section Header */
+    .sidebar-section-title {
+      padding: 10px 18px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #71717a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .session-count-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: #18181b;
+      color: var(--text-muted);
+      padding: 1px 6px;
+      border-radius: 10px;
+      border: 1px solid #27272a;
+    }
+
+    /* Scrollable Session List */
+    .sidebar-scrollable {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 4px 8px 12px;
+    }
+
+    .sidebar-scrollable::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar-scrollable::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .session-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .session-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      color: #a1a1aa;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .session-item:hover {
+      background: #16161a;
+      color: #f4f4f5;
+    }
+
+    .session-item.active {
+      background: #202126;
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .session-item-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .session-item-icon {
+      color: var(--text-dim);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .session-item.active .session-item-icon {
+      color: var(--accent-green);
+    }
+
+    .session-item-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Session Item Action Buttons */
+    .session-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      opacity: 0;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+    }
+
+    .session-item:hover .session-actions,
+    .session-item.active .session-actions {
+      opacity: 1;
+    }
+
+    .session-action-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .session-action-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .session-action-btn.delete:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .session-empty-state {
+      padding: 30px 14px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* Sidebar Bottom (Profile & BYOK Settings) */
+    .sidebar-footer {
+      padding: 12px 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(8, 8, 10, 0.7);
+      flex-shrink: 0;
+    }
+
+    .user-profile-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #111115;
+      border: 1px solid #1f1f24;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .user-profile-card:hover {
+      background: #16161b;
+      border-color: #2e2e36;
+    }
+
+    .user-profile-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .user-avatar-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+      border: 1px solid #3f3f46;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .user-meta-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-meta-tier {
+      font-size: 10.5px;
+      color: var(--accent-green);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .user-settings-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .user-settings-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Mobile Backdrop */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 25;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s;
+    }
+
+    .sidebar-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* --- Chat Workspace (Main) --- */
+    .chat-workspace {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
     }
 
     /* Top Bar */
@@ -64,45 +520,48 @@
       justify-content: space-between;
       padding: 0 20px;
       z-index: 20;
+      flex-shrink: 0;
     }
 
-    .brand-group {
+    .header-left {
       display: flex;
       align-items: center;
       gap: 12px;
-      text-decoration: none;
-      color: #fff;
+      min-width: 0;
     }
 
-    .brand-group .brand-logo-svg {
-      height: 22px;
-      width: 22px;
-      fill: #fff;
-      flex-shrink: 0;
-    }
-
-    .brand-group .brand-logo-wordmark {
-      height: 12px;
-      width: auto;
-      fill: #ffffff;
-      display: block;
-      flex-shrink: 0;
-    }
-
-    .brand-badge {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--accent-green);
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 2px 6px;
+    .btn-header-sidebar-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius-sm);
-    }
-
-    .header-controls {
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .btn-header-sidebar-toggle:hover {
+      background: var(--bg-card);
+      border-color: #444;
+    }
+
+    .active-chat-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #ffffff;
+      padding-right: 6px;
     }
 
     .select-model {
@@ -120,6 +579,13 @@
 
     .select-model:focus {
       border-color: var(--accent-blue);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .btn-action {
@@ -155,7 +621,7 @@
       box-shadow: 0 0 6px var(--accent-green);
     }
 
-    /* Chat Area */
+    /* Chat Messages Area */
     .chat-container {
       flex: 1;
       overflow-y: auto;
@@ -166,10 +632,10 @@
 
     .chat-messages {
       flex: 1;
-      max-width: 720px;
+      max-width: 760px;
       width: 100%;
       margin: 0 auto;
-      padding: 30px 20px 100px;
+      padding: 24px 20px 80px;
       display: flex;
       flex-direction: column;
       gap: 22px;
@@ -179,23 +645,26 @@
     .welcome-box {
       margin: auto auto;
       text-align: center;
-      padding: 40px 10px;
+      padding: 30px 10px;
       width: 100%;
       max-width: 720px;
     }
 
     .welcome-title {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
       letter-spacing: -0.03em;
       margin-bottom: 8px;
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .welcome-sub {
       color: var(--text-muted);
       font-size: 14px;
       max-width: 480px;
-      margin: 0 auto 32px;
+      margin: 0 auto 30px;
     }
 
     .suggestion-grid {
@@ -241,6 +710,12 @@
       display: flex;
       gap: 14px;
       align-items: flex-start;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .message-row.user {
@@ -334,17 +809,17 @@
     }
 
     /* Bottom Input Bar */
-    /* Bottom Input Bar - Modern 720px Card (120px initial, max 400px) */
     .input-bar-wrapper {
       position: sticky;
       bottom: 0;
       background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 30%, #000000 100%);
-      padding: 16px 20px 24px;
+      padding: 14px 20px 20px;
       z-index: 10;
+      flex-shrink: 0;
     }
 
     .input-card-container {
-      max-width: 720px;
+      max-width: 760px;
       min-width: 300px;
       width: 100%;
       margin: 0 auto;
@@ -372,7 +847,7 @@
 
     .chat-input-textarea {
       width: 100%;
-      min-height: 54px;
+      min-height: 52px;
       max-height: 260px;
       background: transparent;
       border: none;
@@ -438,6 +913,9 @@
       .dock-hint {
         display: none;
       }
+      .active-chat-badge {
+        display: none;
+      }
     }
 
     .btn-icon {
@@ -500,7 +978,7 @@
     }
 
     .input-subtext {
-      max-width: 720px;
+      max-width: 760px;
       margin: 8px auto 0;
       font-size: 11px;
       color: var(--text-dim);
@@ -593,135 +1071,249 @@
       border-radius: var(--radius-sm);
       cursor: pointer;
     }
+
+    /* Responsividade Mobile (< 768px) */
+    @media (max-width: 768px) {
+      .chat-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        transform: translateX(-100%);
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.9);
+      }
+
+      .chat-sidebar.mobile-open {
+        transform: translateX(0);
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <header class="chat-header">
-    <div style="display: flex; align-items: center; gap: 18px;">
-      <a href="/" class="brand-group" title="Voltar à Landing Page">
-        <svg class="brand-logo-svg" viewBox="0 0 23 23">
-          <path d="M16.9081 2.97708L19.6886 3.98211C19.443 5.21047 19.0856 6.26016 18.6166 7.13118C18.1476 7.97987 17.5893 8.71689 16.9416 9.34224C16.3162 9.94525 15.6015 10.4813 14.7975 10.9503C14.0158 11.397 13.156 11.8325 12.218 12.2568C11.0789 12.7928 10.0627 13.3623 9.16938 13.9654C8.29835 14.5684 7.68816 14.9485 7.01814 15.8418C6.34813 16.7128 5.60712 18.2311 5.11578 19.6605L2.43571 18.5885C2.86005 17.2708 3.37373 16.1429 3.97675 15.2049C4.6021 14.2669 5.27211 13.474 5.9868 12.8263C6.72381 12.1786 7.48317 11.6203 8.26485 11.1513C9.04654 10.6823 9.81706 10.2468 10.5764 9.84475C11.4028 9.4204 12.1509 9.01839 12.821 8.63872C13.5133 8.23671 14.1196 7.90963 14.6556 7.44062C15.2139 6.9716 15.6797 6.2825 16.037 5.59015C16.4167 4.8978 16.7071 4.02677 16.9081 2.97708Z"/>
-          <path d="M21.2288 10.6883L22.1767 13.4889C21.0632 14.0627 20.0197 14.4378 19.0463 14.6142C18.0903 14.7766 17.166 14.7996 16.2732 14.6831C15.4119 14.5702 14.5472 14.3456 13.6792 14.0094C12.8426 13.6768 11.966 13.2761 11.0494 12.8073C9.92017 12.2509 8.84132 11.8115 7.81286 11.489C6.79833 11.184 6.12072 10.9439 5.00452 10.9771C3.90578 10.9963 2.25672 11.3636 0.832845 11.8707L0 9.10691C1.29479 8.61711 2.49686 8.31551 3.60621 8.20212C4.72948 8.10619 5.76711 8.1357 6.71908 8.29064C7.68498 8.46304 8.59497 8.7086 9.44903 9.02732C10.3031 9.34604 11.124 9.67692 11.9118 10.02C12.7587 10.4014 13.5395 10.7358 14.2541 11.0229C15.0001 11.3135 15.6338 11.5836 16.3347 11.7102C17.0495 11.8543 17.8787 11.7888 18.6428 11.6365C19.4208 11.5017 20.2828 11.1856 21.2288 10.6883Z"/>
-          <path d="M17.8939 18.8743L16.2953 21.3615C15.1524 20.8487 14.2086 20.2667 13.4638 19.6156C12.7407 18.9695 12.1464 18.2612 11.6809 17.4906C11.2321 16.7467 10.8686 15.9307 10.5902 15.0425C10.3287 14.181 10.0955 13.2458 9.89048 12.2369C9.62136 11.0071 9.29225 9.88967 8.90315 8.88453C8.50907 7.90116 8.2743 7.22169 7.55243 6.36968C6.85234 5.52264 5.53701 4.46236 4.25281 3.66527L5.89433 1.29095C7.08457 1.99787 8.06984 2.74964 8.85016 3.54627C9.62551 4.36467 10.2494 5.19431 10.7218 6.0352C11.1892 6.89786 11.5646 7.76242 11.8479 8.62887C12.1312 9.49533 12.3844 10.3434 12.6073 11.1732C12.8372 12.0733 13.0626 12.8921 13.2837 13.6299C13.5215 14.3943 13.7055 15.0581 14.0435 15.6851C14.3765 16.3338 14.9447 16.9412 15.5402 17.4437C16.1307 17.9679 16.9153 18.4448 17.8939 18.8743Z"/>
-          <path d="M9.41453 21.3708L6.47326 21.6718C6.16164 20.4585 6.02815 19.3577 6.07279 18.3694C6.12713 17.4013 6.3104 16.495 6.62261 15.6506C6.9244 14.8359 7.33574 14.0429 7.85664 13.2715C8.3671 12.5299 8.95284 11.7644 9.61386 10.9751C10.4075 9.99799 11.076 9.04397 11.6192 8.11306C12.1423 7.19184 12.5272 6.58464 12.7433 5.48904C12.969 4.41357 12.9779 2.72413 12.8004 1.22312L15.6802 1.02615C15.8696 2.39748 15.8961 3.63651 15.7598 4.74328C15.6034 5.85974 15.3437 6.86478 14.9808 7.75841C14.5978 8.66174 14.1559 9.49426 13.6551 10.256C13.1544 11.0177 12.6491 11.7444 12.1394 12.4361C11.579 13.1769 11.0793 13.8638 10.6404 14.4966C10.191 15.1592 9.78674 15.7169 9.5073 16.372C9.20775 17.0368 9.08709 17.8598 9.06553 18.6386C9.02386 19.4271 9.14019 20.3379 9.41453 21.3708Z"/>
-          <path d="M2.17587 16.298L0.106731 14.186C0.861043 13.1859 1.63844 12.3952 2.43893 11.8139C3.22972 11.2528 4.05256 10.831 4.90743 10.5486C5.73249 10.2767 6.60897 10.1038 7.53686 10.0301C8.43494 9.96681 9.3986 9.94751 10.4278 9.97218C11.6866 9.98345 12.8493 9.91125 13.9158 9.75556C14.9622 9.59019 15.6769 9.5125 16.6682 8.99832C17.6498 8.50427 18.9762 7.45784 20.039 6.38321L21.9885 8.51192C21.0345 9.51501 20.0823 10.3083 19.132 10.8918C18.1616 11.4656 17.214 11.8892 16.289 12.1627C15.344 12.4264 14.4176 12.6 13.5098 12.6834C12.602 12.7668 11.7188 12.8249 10.8603 12.8576C9.93164 12.8814 9.08312 12.919 8.31472 12.9703C7.51651 13.0321 6.82838 13.0638 6.14195 13.2538C5.4354 13.4341 4.71676 13.8529 4.09441 14.3216C3.45193 14.7806 2.81242 15.4394 2.17587 16.298Z"/>
-          <path d="M1.62878 7.47567L1.98987 4.54117C3.2421 4.50735 4.34499 4.62215 5.29854 4.88559C6.23031 5.15399 7.0731 5.53433 7.82689 6.02662C8.55394 6.50211 9.23555 7.0796 9.87172 7.7591C10.4811 8.42179 11.0971 9.16318 11.7195 9.98326C12.4955 10.9745 13.2769 11.8384 14.0636 12.5752C14.8453 13.2902 15.3516 13.8005 16.3717 14.255C17.37 14.7144 19.0151 15.0989 20.5179 15.2599L20.0692 18.1113C18.6901 17.9908 17.4762 17.741 16.4275 17.3618C15.3738 16.9609 14.4518 16.4841 13.6613 15.9315C12.8659 15.357 12.1525 14.741 11.5213 14.0832C10.8901 13.4255 10.2941 12.7712 9.73318 12.1204C9.1356 11.4092 8.57718 10.7692 8.05793 10.2005C7.51194 9.61493 7.05816 9.09666 6.48163 8.67845C5.90013 8.23847 5.12466 7.93771 4.37015 7.74339C3.61067 7.5273 2.69688 7.43805 1.62878 7.47567Z"/>
-          <path d="M8.18522 1.54731L10.7046 0C11.5118 0.957948 12.1097 1.8918 12.4983 2.80156C12.8694 3.6974 13.0975 4.59346 13.1826 5.48973C13.2641 6.35462 13.2376 7.24759 13.103 8.16862C12.9649 9.05827 12.7693 10.0021 12.5162 11C12.2251 12.2247 12.0367 13.3743 11.9512 14.4487C11.8796 15.5057 11.7963 16.2198 12.077 17.3006C12.3402 18.3675 13.0653 19.8935 13.8765 21.1688L11.3673 22.5958C10.6017 21.4425 10.0402 20.3376 9.68276 19.2813C9.33928 18.2076 9.13715 17.1894 9.07637 16.2268C9.02952 15.2468 9.06643 14.305 9.18712 13.4014C9.3078 12.4978 9.44771 11.6239 9.60685 10.7795C9.79031 9.86888 9.94249 9.03328 10.0634 8.27271C10.1808 7.48076 10.303 6.80285 10.2706 6.09135C10.252 5.36239 10.0036 4.56858 9.68513 3.85753C9.38055 3.12901 8.88058 2.35894 8.18522 1.54731Z"/>
-        </svg>
-        <svg class="brand-logo-wordmark" viewBox="0 0 70 12" fill="none">
-          <path d="M64.1156 11.928C63.3316 11.928 62.5636 11.808 61.8116 11.568C61.0756 11.312 60.4036 10.944 59.7956 10.464C59.2036 9.984 58.7316 9.392 58.3796 8.688C58.0276 7.968 57.8516 7.144 57.8516 6.216C57.8516 5.224 58.0276 4.344 58.3796 3.576C58.7476 2.808 59.2356 2.16 59.8436 1.632C60.4516 1.104 61.1316 0.704 61.8836 0.431999C62.6356 0.144 63.4116 0 64.2116 0C65.1716 0 66.0196 0.151999 66.7556 0.455999C67.4916 0.743999 68.0676 1.16 68.4836 1.704C68.9156 2.232 69.1316 2.856 69.1316 3.576C69.1316 4.312 68.9076 4.928 68.4596 5.424C68.0276 5.92 67.4596 6.296 66.7556 6.552C66.0516 6.792 65.3076 6.912 64.5236 6.912C63.5476 6.912 62.6676 6.8 61.8836 6.576C61.1156 6.336 60.3636 6.048 59.6276 5.712L59.6036 4.272C60.4516 4.64 61.2276 4.896 61.9316 5.04C62.6516 5.184 63.3476 5.256 64.0196 5.256C64.5316 5.256 64.9876 5.192 65.3876 5.064C65.8036 4.936 66.1396 4.744 66.3956 4.488C66.6516 4.232 66.7796 3.928 66.7796 3.576C66.7796 3.064 66.5556 2.656 66.1076 2.352C65.6596 2.032 65.0836 1.872 64.3796 1.872C63.8516 1.872 63.3316 1.976 62.8196 2.184C62.3236 2.376 61.8676 2.656 61.4516 3.024C61.0516 3.392 60.7236 3.84 60.4676 4.368C60.2276 4.88 60.1076 5.472 60.1076 6.144C60.1076 6.928 60.2996 7.608 60.6836 8.184C61.0676 8.744 61.5636 9.176 62.1716 9.48C62.7956 9.768 63.4676 9.912 64.1876 9.912C65.0836 9.912 65.8676 9.768 66.5396 9.48C67.2276 9.176 67.8356 8.8 68.3636 8.352L69.3716 9.912C68.9236 10.296 68.4356 10.64 67.9076 10.944C67.3956 11.248 66.8196 11.488 66.1796 11.664C65.5556 11.84 64.8676 11.928 64.1156 11.928Z" fill="white"/>
-          <path d="M49.0646 11.928L43.4726 1.29596H46.0886L49.9046 8.99996L53.6006 1.31996H55.7366L50.2886 11.928H49.0646ZM42.2246 2.18396V0.287964H48.3446V2.01596H44.7926L44.6486 2.18396H42.2246ZM51.3446 2.01596V0.287964H57.1526V2.18396H54.6566L54.5126 2.01596H51.3446Z" fill="white"/>
-          <path d="M41.7751 11.04C40.9591 11.6 40.0551 11.88 39.0631 11.88C38.3271 11.88 37.6791 11.664 37.1191 11.232C36.5591 10.8 36.1751 10.224 35.9671 9.504C34.3991 10.256 32.7031 10.848 30.8791 11.28C29.0551 11.696 27.2551 11.904 25.4791 11.904C23.4311 11.904 21.8551 11.6 20.7511 10.992C19.6631 10.384 19.1191 9.52 19.1191 8.4C19.1191 7.168 19.7991 6.224 21.1591 5.568C22.5351 4.912 24.4711 4.584 26.9671 4.584C29.9111 4.584 32.8551 5 35.7991 5.832C35.7191 4.488 35.1351 3.488 34.0471 2.832C32.9751 2.16 31.3271 1.824 29.1031 1.824C26.3991 1.824 23.3431 2.352 19.9351 3.408L19.4071 1.632C22.7191 0.543999 26.0791 0 29.4871 0C32.3191 0 34.4311 0.536 35.8231 1.608C37.2311 2.68 37.9351 4.192 37.9351 6.144V7.944C37.9351 8.6 38.0871 9.096 38.3911 9.432C38.6951 9.752 39.0711 9.912 39.5191 9.912C40.0791 9.912 40.6151 9.736 41.1271 9.384L41.7751 11.04ZM21.6151 8.304C21.6151 8.88 21.9671 9.312 22.6711 9.6C23.3911 9.888 24.5031 10.032 26.0071 10.032C27.4311 10.032 29.0231 9.864 30.7831 9.528C32.5431 9.192 34.2231 8.736 35.8231 8.16V7.176C32.8951 6.616 29.9431 6.336 26.9671 6.336C25.2711 6.336 23.9511 6.512 23.0071 6.864C22.0791 7.2 21.6151 7.68 21.6151 8.304Z" fill="white"/>
-          <path d="M11.856 11.592V5.016C11.856 4.584 11.8 4.2 11.688 3.864C11.576 3.512 11.408 3.216 11.184 2.976C10.976 2.72 10.712 2.528 10.392 2.4C10.088 2.272 9.728 2.208 9.312 2.208C8.88 2.208 8.44 2.296 7.992 2.472C7.56 2.632 7.12 2.88 6.672 3.216C6.224 3.536 5.776 3.928 5.328 4.392C4.896 4.84 4.456 5.352 4.008 5.928V4.008C4.52 3.384 5.016 2.824 5.496 2.328C5.992 1.832 6.48 1.408 6.96 1.056C7.456 0.704 7.96 0.439999 8.472 0.263999C9 0.0879993 9.552 0 10.128 0C10.784 0 11.36 0.104 11.856 0.311999C12.368 0.503999 12.792 0.808 13.128 1.224C13.48 1.64 13.744 2.16 13.92 2.784C14.112 3.392 14.208 4.112 14.208 4.944V11.592H11.856ZM0 11.592V9.696H6.984V11.592H0ZM2.544 11.592V0.288H4.92V11.592H2.544ZM0 2.184V0.288H4.416V2.184H0ZM9.768 11.592V9.696H16.44V11.592H9.768Z" fill="white"/>
-        </svg>
-        <span class="brand-badge">CHAT</span>
-      </a>
+  <div class="app-layout">
+    <!-- Collapsible Gemini-Style Sidebar -->
+    <aside class="chat-sidebar" id="chatSidebar">
+      <div class="sidebar-inner">
+        <!-- Sidebar Top Header -->
+        <div class="sidebar-top">
+          <a href="/" class="brand-group" title="Voltar à Landing Page">
+            <svg class="brand-logo-svg" viewBox="0 0 23 23">
+              <path d="M16.9081 2.97708L19.6886 3.98211C19.443 5.21047 19.0856 6.26016 18.6166 7.13118C18.1476 7.97987 17.5893 8.71689 16.9416 9.34224C16.3162 9.94525 15.6015 10.4813 14.7975 10.9503C14.0158 11.397 13.156 11.8325 12.218 12.2568C11.0789 12.7928 10.0627 13.3623 9.16938 13.9654C8.29835 14.5684 7.68816 14.9485 7.01814 15.8418C6.34813 16.7128 5.60712 18.2311 5.11578 19.6605L2.43571 18.5885C2.86005 17.2708 3.37373 16.1429 3.97675 15.2049C4.6021 14.2669 5.27211 13.474 5.9868 12.8263C6.72381 12.1786 7.48317 11.6203 8.26485 11.1513C9.04654 10.6823 9.81706 10.2468 10.5764 9.84475C11.4028 9.4204 12.1509 9.01839 12.821 8.63872C13.5133 8.23671 14.1196 7.90963 14.6556 7.44062C15.2139 6.9716 15.6797 6.2825 16.037 5.59015C16.4167 4.8978 16.7071 4.02677 16.9081 2.97708Z"/>
+              <path d="M21.2288 10.6883L22.1767 13.4889C21.0632 14.0627 20.0197 14.4378 19.0463 14.6142C18.0903 14.7766 17.166 14.7996 16.2732 14.6831C15.4119 14.5702 14.5472 14.3456 13.6792 14.0094C12.8426 13.6768 11.966 13.2761 11.0494 12.8073C9.92017 12.2509 8.84132 11.8115 7.81286 11.489C6.79833 11.184 6.12072 10.9439 5.00452 10.9771C3.90578 10.9963 2.25672 11.3636 0.832845 11.8707L0 9.10691C1.29479 8.61711 2.49686 8.31551 3.60621 8.20212C4.72948 8.10619 5.76711 8.1357 6.71908 8.29064C7.68498 8.46304 8.59497 8.7086 9.44903 9.02732C10.3031 9.34604 11.124 9.67692 11.9118 10.02C12.7587 10.4014 13.5395 10.7358 14.2541 11.0229C15.0001 11.3135 15.6338 11.5836 16.3347 11.7102C17.0495 11.8543 17.8787 11.7888 18.6428 11.6365C19.4208 11.5017 20.2828 11.1856 21.2288 10.6883Z"/>
+              <path d="M17.8939 18.8743L16.2953 21.3615C15.1524 20.8487 14.2086 20.2667 13.4638 19.6156C12.7407 18.9695 12.1464 18.2612 11.6809 17.4906C11.2321 16.7467 10.8686 15.9307 10.5902 15.0425C10.3287 14.181 10.0955 13.2458 9.89048 12.2369C9.62136 11.0071 9.29225 9.88967 8.90315 8.88453C8.50907 7.90116 8.2743 7.22169 7.55243 6.36968C6.85234 5.52264 5.53701 4.46236 4.25281 3.66527L5.89433 1.29095C7.08457 1.99787 8.06984 2.74964 8.85016 3.54627C9.62551 4.36467 10.2494 5.19431 10.7218 6.0352C11.1892 6.89786 11.5646 7.76242 11.8479 8.62887C12.1312 9.49533 12.3844 10.3434 12.6073 11.1732C12.8372 12.0733 13.0626 12.8921 13.2837 13.6299C13.5215 14.3943 13.7055 15.0581 14.0435 15.6851C14.3765 16.3338 14.9447 16.9412 15.5402 17.4437C16.1307 17.9679 16.9153 18.4448 17.8939 18.8743Z"/>
+              <path d="M9.41453 21.3708L6.47326 21.6718C6.16164 20.4585 6.02815 19.3577 6.07279 18.3694C6.12713 17.4013 6.3104 16.495 6.62261 15.6506C6.9244 14.8359 7.33574 14.0429 7.85664 13.2715C8.3671 12.5299 8.95284 11.7644 9.61386 10.9751C10.4075 9.99799 11.076 9.04397 11.6192 8.11306C12.1423 7.19184 12.5272 6.58464 12.7433 5.48904C12.969 4.41357 12.9779 2.72413 12.8004 1.22312L15.6802 1.02615C15.8696 2.39748 15.8961 3.63651 15.7598 4.74328C15.6034 5.85974 15.3437 6.86478 14.9808 7.75841C14.5978 8.66174 14.1559 9.49426 13.6551 10.256C13.1544 11.0177 12.6491 11.7444 12.1394 12.4361C11.579 13.1769 11.0793 13.8638 10.6404 14.4966C10.191 15.1592 9.78674 15.7169 9.5073 16.372C9.20775 17.0368 9.08709 17.8598 9.06553 18.6386C9.02386 19.4271 9.14019 20.3379 9.41453 21.3708Z"/>
+              <path d="M2.17587 16.298L0.106731 14.186C0.861043 13.1859 1.63844 12.3952 2.43893 11.8139C3.22972 11.2528 4.05256 10.831 4.90743 10.5486C5.73249 10.2767 6.60897 10.1038 7.53686 10.0301C8.43494 9.96681 9.3986 9.94751 10.4278 9.97218C11.6866 9.98345 12.8493 9.91125 13.9158 9.75556C14.9622 9.59019 15.6769 9.5125 16.6682 8.99832C17.6498 8.50427 18.9762 7.45784 20.039 6.38321L21.9885 8.51192C21.0345 9.51501 20.0823 10.3083 19.132 10.8918C18.1616 11.4656 17.214 11.8892 16.289 12.1627C15.344 12.4264 14.4176 12.6 13.5098 12.6834C12.602 12.7668 11.7188 12.8249 10.8603 12.8576C9.93164 12.8814 9.08312 12.919 8.31472 12.9703C7.51651 13.0321 6.82838 13.0638 6.14195 13.2538C5.4354 13.4341 4.71676 13.8529 4.09441 14.3216C3.45193 14.7806 2.81242 15.4394 2.17587 16.298Z"/>
+              <path d="M1.62878 7.47567L1.98987 4.54117C3.2421 4.50735 4.34499 4.62215 5.29854 4.88559C6.23031 5.15399 7.0731 5.53433 7.82689 6.02662C8.55394 6.50211 9.23555 7.0796 9.87172 7.7591C10.4811 8.42179 11.0971 9.16318 11.7195 9.98326C12.4955 10.9745 13.2769 11.8384 14.0636 12.5752C14.8453 13.2902 15.3516 13.8005 16.3717 14.255C17.37 14.7144 19.0151 15.0989 20.5179 15.2599L20.0692 18.1113C18.6901 17.9908 17.4762 17.741 16.4275 17.3618C15.3738 16.9609 14.4518 16.4841 13.6613 15.9315C12.8659 15.357 12.1525 14.741 11.5213 14.0832C10.8901 13.4255 10.2941 12.7712 9.73318 12.1204C9.1356 11.4092 8.57718 10.7692 8.05793 10.2005C7.51194 9.61493 7.05816 9.09666 6.48163 8.67845C5.90013 8.23847 5.12466 7.93771 4.37015 7.74339C3.61067 7.5273 2.69688 7.43805 1.62878 7.47567Z"/>
+              <path d="M8.18522 1.54731L10.7046 0C11.5118 0.957948 12.1097 1.8918 12.4983 2.80156C12.8694 3.6974 13.0975 4.59346 13.1826 5.48973C13.2641 6.35462 13.2376 7.24759 13.103 8.16862C12.9649 9.05827 12.7693 10.0021 12.5162 11C12.2251 12.2247 12.0367 13.3743 11.9512 14.4487C11.8796 15.5057 11.7963 16.2198 12.077 17.3006C12.3402 18.3675 13.0653 19.8935 13.8765 21.1688L11.3673 22.5958C10.6017 21.4425 10.0402 20.3376 9.68276 19.2813C9.33928 18.2076 9.13715 17.1894 9.07637 16.2268C9.02952 15.2468 9.06643 14.305 9.18712 13.4014C9.3078 12.4978 9.44771 11.6239 9.60685 10.7795C9.79031 9.86888 9.94249 9.03328 10.0634 8.27271C10.1808 7.48076 10.303 6.80285 10.2706 6.09135C10.252 5.36239 10.0036 4.56858 9.68513 3.85753C9.38055 3.12901 8.88058 2.35894 8.18522 1.54731Z"/>
+            </svg>
+            <svg class="brand-logo-wordmark" viewBox="0 0 70 12" fill="none">
+              <path d="M64.1156 11.928C63.3316 11.928 62.5636 11.808 61.8116 11.568C61.0756 11.312 60.4036 10.944 59.7956 10.464C59.2036 9.984 58.7316 9.392 58.3796 8.688C58.0276 7.968 57.8516 7.144 57.8516 6.216C57.8516 5.224 58.0276 4.344 58.3796 3.576C58.7476 2.808 59.2356 2.16 59.8436 1.632C60.4516 1.104 61.1316 0.704 61.8836 0.431999C62.6356 0.144 63.4116 0 64.2116 0C65.1716 0 66.0196 0.151999 66.7556 0.455999C67.4916 0.743999 68.0676 1.16 68.4836 1.704C68.9156 2.232 69.1316 2.856 69.1316 3.576C69.1316 4.312 68.9076 4.928 68.4596 5.424C68.0276 5.92 67.4596 6.296 66.7556 6.552C66.0516 6.792 65.3076 6.912 64.5236 6.912C63.5476 6.912 62.6676 6.8 61.8836 6.576C61.1156 6.336 60.3636 6.048 59.6276 5.712L59.6036 4.272C60.4516 4.64 61.2276 4.896 61.9316 5.04C62.6516 5.184 63.3476 5.256 64.0196 5.256C64.5316 5.256 64.9876 5.192 65.3876 5.064C65.8036 4.936 66.1396 4.744 66.3956 4.488C66.6516 4.232 66.7796 3.928 66.7796 3.576C66.7796 3.064 66.5556 2.656 66.1076 2.352C65.6596 2.032 65.0836 1.872 64.3796 1.872C63.8516 1.872 63.3316 1.976 62.8196 2.184C62.3236 2.376 61.8676 2.656 61.4516 3.024C61.0516 3.392 60.7236 3.84 60.4676 4.368C60.2276 4.88 60.1076 5.472 60.1076 6.144C60.1076 6.928 60.2996 7.608 60.6836 8.184C61.0676 8.744 61.5636 9.176 62.1716 9.48C62.7956 9.768 63.4676 9.912 64.1876 9.912C65.0836 9.912 65.8676 9.768 66.5396 9.48C67.2276 9.176 67.8356 8.8 68.3636 8.352L69.3716 9.912C68.9236 10.296 68.4356 10.64 67.9076 10.944C67.3956 11.248 66.8196 11.488 66.1796 11.664C65.5556 11.84 64.8676 11.928 64.1156 11.928Z" fill="white"/>
+              <path d="M49.0646 11.928L43.4726 1.29596H46.0886L49.9046 8.99996L53.6006 1.31996H55.7366L50.2886 11.928H49.0646ZM42.2246 2.18396V0.287964H48.3446V2.01596H44.7926L44.6486 2.18396H42.2246ZM51.3446 2.01596V0.287964H57.1526V2.18396H54.6566L54.5126 2.01596H51.3446Z" fill="white"/>
+              <path d="M41.7751 11.04C40.9591 11.6 40.0551 11.88 39.0631 11.88C38.3271 11.88 37.6791 11.664 37.1191 11.232C36.5591 10.8 36.1751 10.224 35.9671 9.504C34.3991 10.256 32.7031 10.848 30.8791 11.28C29.0551 11.696 27.2551 11.904 25.4791 11.904C23.4311 11.904 21.8551 11.6 20.7511 10.992C19.6631 10.384 19.1191 9.52 19.1191 8.4C19.1191 7.168 19.7991 6.224 21.1591 5.568C22.5351 4.912 24.4711 4.584 26.9671 4.584C29.9111 4.584 32.8551 5 35.7991 5.832C35.7191 4.488 35.1351 3.488 34.0471 2.832C32.9751 2.16 31.3271 1.824 29.1031 1.824C26.3991 1.824 23.3431 2.352 19.9351 3.408L19.4071 1.632C22.7191 0.543999 26.0791 0 29.4871 0C32.3191 0 34.4311 0.536 35.8231 1.608C37.2311 2.68 37.9351 4.192 37.9351 6.144V7.944C37.9351 8.6 38.0871 9.096 38.3911 9.432C38.6951 9.752 39.0711 9.912 39.5191 9.912C40.0791 9.912 40.6151 9.736 41.1271 9.384L41.7751 11.04ZM21.6151 8.304C21.6151 8.88 21.9671 9.312 22.6711 9.6C23.3911 9.888 24.5031 10.032 26.0071 10.032C27.4311 10.032 29.0231 9.864 30.7831 9.528C32.5431 9.192 34.2231 8.736 35.8231 8.16V7.176C32.8951 6.616 29.9431 6.336 26.9671 6.336C25.2711 6.336 23.9511 6.512 23.0071 6.864C22.0791 7.2 21.6151 7.68 21.6151 8.304Z" fill="white"/>
+              <path d="M11.856 11.592V5.016C11.856 4.584 11.8 4.2 11.688 3.864C11.576 3.512 11.408 3.216 11.184 2.976C10.976 2.72 10.712 2.528 10.392 2.4C10.088 2.272 9.728 2.208 9.312 2.208C8.88 2.208 8.44 2.296 7.992 2.472C7.56 2.632 7.12 2.88 6.672 3.216C6.224 3.536 5.776 3.928 5.328 4.392C4.896 4.84 4.456 5.352 4.008 5.928V4.008C4.52 3.384 5.016 2.824 5.496 2.328C5.992 1.832 6.48 1.408 6.96 1.056C7.456 0.704 7.96 0.439999 8.472 0.263999C9 0.0879993 9.552 0 10.128 0C10.784 0 11.36 0.104 11.856 0.311999C12.368 0.503999 12.792 0.808 13.128 1.224C13.48 1.64 13.744 2.16 13.92 2.784C14.112 3.392 14.208 4.112 14.208 4.944V11.592H11.856ZM0 11.592V9.696H6.984V11.592H0ZM2.544 11.592V0.288H4.92V11.592H2.544ZM0 2.184V0.288H4.416V2.184H0ZM9.768 11.592V9.696H16.44V11.592H9.768Z" fill="white"/>
+            </svg>
+            <span class="brand-badge">CHAT</span>
+          </a>
 
-      <select class="select-model" id="modelSelect">
-        <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
-        <option value="openai/gpt-4o">OpenAI GPT-4o</option>
-        <option value="deepseek/deepseek-r1">DeepSeek R1</option>
-        <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
-        <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
-      </select>
-    </div>
+          <!-- Collapse Sidebar Button -->
+          <button class="sidebar-toggle-btn" id="btnCollapseSidebar" title="Recolher menu lateral">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+              <line x1="9" x2="9" y1="3" y2="21"/>
+            </svg>
+          </button>
+        </div>
 
-    <div class="header-controls">
-      <button class="btn-action" id="btnOpenKeyModal">
-        <span class="key-indicator" id="keyIndicator"></span>
-        <span id="keyLabel">Chave OpenRouter</span>
-      </button>
+        <!-- Quick Actions (New Chat & Search) -->
+        <div class="sidebar-actions">
+          <button class="btn-new-chat" id="btnNewChat">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Nova conversa</span>
+          </button>
 
-      <button class="btn-action" id="btnClearChat" title="Limpar conversa">
-        <span>Limpar</span>
-      </button>
-
-      <a href="/" class="btn-action" style="color: var(--text-muted);">
-        &larr; Voltar
-      </a>
-    </div>
-  </header>
-
-  <!-- Chat Container -->
-  <main class="chat-container" id="chatContainer">
-    <div class="chat-messages" id="chatMessages">
-      <!-- Welcome State -->
-      <div class="welcome-box" id="welcomeBox">
-        <h2 class="welcome-title">A IA que acompanha você.</h2>
-        <p class="welcome-sub">
-          Converse com modelos líderes ou consulte dados simulados de clínicas e sistemas parceiros.
-        </p>
-
-        <div class="suggestion-grid">
-          <div class="suggestion-card" onclick="useSuggestion('Quantos pacientes precisam de retorno pós-operatório hoje no Clinic Kiosk?')">
-            <span class="suggestion-tag">SISTEMA CLÍNICA</span>
-            <div class="suggestion-text">"Quantos pacientes precisam de retorno hoje no Clinic Kiosk?"</div>
-          </div>
-
-          <div class="suggestion-card" onclick="useSuggestion('Analise a lista de consultas pendentes e sugira mensagens de confirmação.')">
-            <span class="suggestion-tag">AUTOMAÇÃO</span>
-            <div class="suggestion-text">"Analise as consultas pendentes e sugira confirmações."</div>
-          </div>
-
-          <div class="suggestion-card" onclick="useSuggestion('Como funciona a conexão de APIs da minha empresa ao Nave?')">
-            <span class="suggestion-tag">ARQUITETURA NAVE</span>
-            <div class="suggestion-text">"Como funciona a conexão de APIs da minha empresa ao Nave?"</div>
-          </div>
-
-          <div class="suggestion-card" onclick="useSuggestion('Resuma os benefícios do modelo BYOK (Bring Your Own Key) com OpenRouter.')">
-            <span class="suggestion-tag">BYOK OPENROUTER</span>
-            <div class="suggestion-text">"Quais os benefícios do BYOK com OpenRouter?"</div>
+          <div class="sidebar-search-box">
+            <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="sidebarSearchInput" class="sidebar-search-input" placeholder="Buscar conversas...">
+            <button class="search-clear-btn" id="btnSearchClear" title="Limpar busca">&times;</button>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
 
-  <!-- Input Bar - Modern 720px Card -->
-  <div class="input-bar-wrapper">
-    <div class="input-card-container">
-      <div class="chat-input-card">
-        <textarea
-          id="userInput"
-          class="chat-input-textarea"
-          placeholder="Digite uma mensagem ou pergunte sobre os dados dos seus sistemas..."
-          rows="2"
-        ></textarea>
+        <!-- Section: Recents -->
+        <div class="sidebar-section-title">
+          <span>Recentes</span>
+          <span class="session-count-badge" id="sessionCountBadge">0</span>
+        </div>
 
-        <div class="chat-input-bottom">
-          <div class="chat-input-left">
-            <span class="dock-pill" id="dockModelBadge">
-              <span class="dock-pill-dot"></span>
-              <span id="dockModelLabel">Claude 3.5</span>
-            </span>
-            <span class="dock-hint">Shift + Enter para nova linha</span>
+        <!-- Session List Container -->
+        <div class="sidebar-scrollable" id="sidebarScrollable">
+          <div class="session-list" id="sessionList">
+            <!-- Dynamic session items injected via JS -->
           </div>
+          <div class="session-empty-state" id="sessionEmptyState" style="display: none;">
+            Nenhuma conversa encontrada
+          </div>
+        </div>
 
-          <div class="chat-input-right">
-            <button class="btn-icon" id="btnVoice" title="Digitar por voz (Microfone)">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                <line x1="12" x2="12" y1="19" y2="22"/>
-              </svg>
-            </button>
-
-            <button class="btn-send" id="btnSend" title="Enviar (Enter)">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5"/>
-                <polyline points="5 12 12 5 19 12"/>
+        <!-- Sidebar Footer: Ozati Company Pro & BYOK Config -->
+        <div class="sidebar-footer">
+          <div class="user-profile-card" id="userProfileCard" title="Configurar OpenRouter BYOK">
+            <div class="user-profile-left">
+              <div class="user-avatar-circle">O</div>
+              <div class="user-meta">
+                <span class="user-meta-name">Ozati Company</span>
+                <span class="user-meta-tier">
+                  <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--accent-green);"></span>
+                  Pro &bull; BYOK
+                </span>
+              </div>
+            </div>
+            <button class="user-settings-btn" id="btnFooterSettings" title="Chave OpenRouter">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
               </svg>
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </aside>
 
-    <div class="input-subtext">
-      <span>Nave Core &bull; Conexão Direta</span>
-      <span id="statusIndicator">Modo: Conexão Direta</span>
+    <!-- Backdrop for Mobile Sidebar Drawer -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Chat Workspace -->
+    <div class="chat-workspace">
+      <!-- Top Bar Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <!-- Expand button visible when desktop sidebar collapsed or on mobile -->
+          <button class="btn-header-sidebar-toggle" id="btnHeaderSidebarToggle" title="Abrir histórico e menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+              <line x1="9" x2="9" y1="3" y2="21"/>
+            </svg>
+          </button>
+
+          <!-- Current Chat Title Indicator -->
+          <span class="active-chat-badge" id="activeChatBadge">Nova conversa</span>
+
+          <select class="select-model" id="modelSelect">
+            <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+            <option value="openai/gpt-4o">OpenAI GPT-4o</option>
+            <option value="deepseek/deepseek-r1">DeepSeek R1</option>
+            <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
+            <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
+          </select>
+        </div>
+
+        <div class="header-controls">
+          <button class="btn-action" id="btnOpenKeyModal">
+            <span class="key-indicator" id="keyIndicator"></span>
+            <span id="keyLabel">Chave OpenRouter</span>
+          </button>
+
+          <button class="btn-action" id="btnClearChat" title="Nova conversa">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Nova</span>
+          </button>
+
+          <a href="/" class="btn-action" style="color: var(--text-muted);">
+            &larr; Voltar
+          </a>
+        </div>
+      </header>
+
+      <!-- Chat Area Container -->
+      <main class="chat-container" id="chatContainer">
+        <div class="chat-messages" id="chatMessages">
+          <!-- Welcome State -->
+          <div class="welcome-box" id="welcomeBox">
+            <h2 class="welcome-title">A IA que acompanha você.</h2>
+            <p class="welcome-sub">
+              Converse com modelos líderes ou consulte dados sincronizados dos seus sistemas parceiros.
+            </p>
+
+            <div class="suggestion-grid">
+              <div class="suggestion-card" onclick="useSuggestion('Quantos pacientes precisam de retorno pós-operatório hoje no Clinic Kiosk?')">
+                <span class="suggestion-tag">SISTEMA CLÍNICA</span>
+                <div class="suggestion-text">"Quantos pacientes precisam de retorno hoje no Clinic Kiosk?"</div>
+              </div>
+
+              <div class="suggestion-card" onclick="useSuggestion('Analise a lista de consultas pendentes e sugira mensagens de confirmação.')">
+                <span class="suggestion-tag">AUTOMAÇÃO</span>
+                <div class="suggestion-text">"Analise as consultas pendentes e sugira confirmações."</div>
+              </div>
+
+              <div class="suggestion-card" onclick="useSuggestion('Como funciona a conexão de APIs da minha empresa ao Nave?')">
+                <span class="suggestion-tag">ARQUITETURA NAVE</span>
+                <div class="suggestion-text">"Como funciona a conexão de APIs da minha empresa ao Nave?"</div>
+              </div>
+
+              <div class="suggestion-card" onclick="useSuggestion('Resuma os benefícios do modelo BYOK (Bring Your Own Key) com OpenRouter.')">
+                <span class="suggestion-tag">BYOK OPENROUTER</span>
+                <div class="suggestion-text">"Quais os benefícios do BYOK com OpenRouter?"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Bottom Input Bar -->
+      <div class="input-bar-wrapper">
+        <div class="input-card-container">
+          <div class="chat-input-card">
+            <textarea
+              id="userInput"
+              class="chat-input-textarea"
+              placeholder="Digite uma mensagem ou pergunte sobre os dados dos seus sistemas..."
+              rows="2"
+            ></textarea>
+
+            <div class="chat-input-bottom">
+              <div class="chat-input-left">
+                <span class="dock-pill" id="dockModelBadge">
+                  <span class="dock-pill-dot"></span>
+                  <span id="dockModelLabel">Claude 3.5</span>
+                </span>
+                <span class="dock-hint">Shift + Enter para nova linha</span>
+              </div>
+
+              <div class="chat-input-right">
+                <button class="btn-icon" id="btnVoice" title="Digitar por voz (Microfone)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" x2="12" y1="19" y2="22"/>
+                  </svg>
+                </button>
+
+                <button class="btn-send" id="btnSend" title="Enviar (Enter)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="19" x2="12" y2="5"/>
+                    <polyline points="5 12 12 5 19 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-subtext">
+          <span>Nave Core &bull; Histórico &amp; Conexão Direta</span>
+          <span id="statusIndicator">Modo: Conexão Direta</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -730,7 +1322,7 @@
     <div class="modal-card">
       <h3>Chave OpenRouter (BYOK)</h3>
       <p>
-        O Nave opera com filosofia <strong>Bring Your Own Key</strong>. Sua chave é guardada apenas no seu navegador (<code style="color:var(--accent-blue)">localStorage</code>) e conversa direto com a OpenRouter.
+        O Nave opera com a arquitetura <strong>Bring Your Own Key</strong>. Sua chave privada fica gravada exclusivamente no seu navegador (<code style="color:var(--accent-blue)">localStorage</code>) e estabelece conexão direta com a OpenRouter.
       </p>
 
       <input
@@ -740,8 +1332,8 @@
         placeholder="sk-or-v1-xxxxxxxxxxxxxxxxxxxx"
       >
 
-      <div style="font-size: 11.5px; color: var(--text-dim); margin-bottom: 20px;">
-        Não tem uma chave? Obtenha em <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent-blue);">openrouter.ai/keys</a>. Se não inserir uma chave, você continuará usando o <strong>Modo Demonstração</strong> com respostas simuladas.
+      <div style="font-size: 11.5px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.5;">
+        Não tem uma chave? Obtenha instantaneamente em <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent-blue); text-decoration: none;">openrouter.ai/keys</a>. Sem uma chave, você continuará usando o <strong>Modo Demonstração</strong> com respostas simuladas.
       </div>
 
       <div class="modal-actions">
@@ -752,12 +1344,41 @@
   </div>
 
   <script>
-    // --- Configuração & Estado ---
+    // --- Configurações & Chaves de Armazenamento ---
     const STORAGE_KEY = 'nave_openrouter_key';
+    const SESSIONS_STORAGE_KEY = 'nave_chat_sessions';
+    const ACTIVE_SESSION_STORAGE_KEY = 'nave_active_session_id';
+    const SIDEBAR_COLLAPSED_KEY = 'nave_sidebar_collapsed';
+
     let apiKey = localStorage.getItem(STORAGE_KEY) || '';
     let isGenerating = false;
     let recognition = null;
     let isListening = false;
+    let currentSessionId = null;
+    let sessions = [];
+
+    // Prompt base de sistema
+    const SYSTEM_PROMPT = {
+      role: 'system',
+      content: 'Você é o Nave AI, a camada de interface e conexão entre pessoas, inteligência artificial e os sistemas da empresa. Responda em Português de forma elegante, precisa, concisa e direta, no estilo minimalista do ecossistema Ozati. Se o usuário perguntar sobre o Clinic Kiosk ou dados de pacientes, integre informações clínicas simuladas (retorno de Roberto Mendes, pós-operatório de menisco, 30 dias pendentes) com extrema naturalidade.'
+    };
+
+    let sessionHistory = [SYSTEM_PROMPT];
+
+    // --- Elementos do DOM ---
+    const appLayout = document.querySelector('.app-layout');
+    const chatSidebar = document.getElementById('chatSidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const btnCollapseSidebar = document.getElementById('btnCollapseSidebar');
+    const btnHeaderSidebarToggle = document.getElementById('btnHeaderSidebarToggle');
+    const btnNewChat = document.getElementById('btnNewChat');
+    const btnClearChat = document.getElementById('btnClearChat');
+    const sidebarSearchInput = document.getElementById('sidebarSearchInput');
+    const btnSearchClear = document.getElementById('btnSearchClear');
+    const sessionList = document.getElementById('sessionList');
+    const sessionEmptyState = document.getElementById('sessionEmptyState');
+    const sessionCountBadge = document.getElementById('sessionCountBadge');
+    const activeChatBadge = document.getElementById('activeChatBadge');
 
     const chatContainer = document.getElementById('chatContainer');
     const chatMessages = document.getElementById('chatMessages');
@@ -765,11 +1386,12 @@
     const userInput = document.getElementById('userInput');
     const btnSend = document.getElementById('btnSend');
     const btnVoice = document.getElementById('btnVoice');
-    const btnClearChat = document.getElementById('btnClearChat');
     const modelSelect = document.getElementById('modelSelect');
 
     const keyModal = document.getElementById('keyModal');
     const btnOpenKeyModal = document.getElementById('btnOpenKeyModal');
+    const btnFooterSettings = document.getElementById('btnFooterSettings');
+    const userProfileCard = document.getElementById('userProfileCard');
     const btnCancelModal = document.getElementById('btnCancelModal');
     const btnSaveKey = document.getElementById('btnSaveKey');
     const apiKeyInput = document.getElementById('apiKeyInput');
@@ -777,15 +1399,319 @@
     const keyLabel = document.getElementById('keyLabel');
     const statusIndicator = document.getElementById('statusIndicator');
 
-    // Mensagens em memória para contexto da sessão
-    let sessionHistory = [
-      {
-        role: 'system',
-        content: 'Você é o Nave AI, a camada de interface e conexão entre pessoas, inteligência artificial e os sistemas da empresa. Responda em Português de forma elegante, precisa, concisa e direta, no estilo minimalista do ecossistema Ozati. Se o usuário perguntar sobre o Clinic Kiosk ou dados de pacientes, integre informações clínicas simuladas (retorno de Roberto Mendes, pós-operatório de menisco, 30 dias pendentes) com extrema naturalidade.'
-      }
-    ];
+    // --- Inicialização de Sessões Iniciais de Demonstração (estilo Gemini) ---
+    function getDefaultSessions() {
+      const now = Date.now();
+      return [
+        {
+          id: 'sess_clinic_kiosk',
+          title: 'Retornos de pacientes no Clinic Kiosk',
+          model: 'anthropic/claude-3.5-sonnet',
+          createdAt: now - 3600000 * 2,
+          updatedAt: now - 3600000 * 2,
+          messages: [
+            {
+              role: 'user',
+              content: 'Quantos pacientes precisam de retorno pós-operatório hoje no Clinic Kiosk?'
+            },
+            {
+              role: 'assistant',
+              content: 'Com base nos dados sincronizados do **Clinic Kiosk**:\n\n• **Paciente em destaque:** Roberto Mendes (54 anos)\n• **Último procedimento:** Cirurgia de Menisco (12/08)\n• **Status clínico:** Retorno de 30 dias com pendência de confirmação.\n\nRecomenda-se disparar mensagem de confirmação para o WhatsApp do paciente ou agendar avaliação no painel da recepção.',
+              isContext: true
+            }
+          ]
+        },
+        {
+          id: 'sess_nave_architecture',
+          title: 'Conexão de APIs e Arquitetura Nave',
+          model: 'anthropic/claude-3.5-sonnet',
+          createdAt: now - 3600000 * 18,
+          updatedAt: now - 3600000 * 18,
+          messages: [
+            {
+              role: 'user',
+              content: 'Como funciona a conexão de APIs da minha empresa ao Nave?'
+            },
+            {
+              role: 'assistant',
+              content: 'O **Nave AI** atua como uma camada inteligente entre seus sistemas legados e os principais modelos de linguagem.\n\n### Principais recursos de integração:\n1. **Conectores de API:** Mapeamento de endpoints REST ou webhooks em tempo real.\n2. **Injeção de Contexto:** Dados de consultas ou pedidos são inseridos como contexto semântico instantâneo na conversa.\n3. **Arquitetura BYOK:** Chaves diretas com a OpenRouter sem retenção de dados proprietários para treino de terceiros.'
+            }
+          ]
+        }
+      ];
+    }
 
-    // Atualiza status da chave
+    function loadSavedSessions() {
+      const stored = localStorage.getItem(SESSIONS_STORAGE_KEY);
+      if (stored) {
+        try {
+          sessions = JSON.parse(stored);
+        } catch (e) {
+          sessions = getDefaultSessions();
+          saveSessions();
+        }
+      } else {
+        sessions = getDefaultSessions();
+        saveSessions();
+      }
+    }
+
+    function saveSessions() {
+      try {
+        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(sessions));
+      } catch (e) {
+        console.warn('Erro ao salvar sessões no localStorage:', e);
+      }
+    }
+
+    // --- Formatação e Geração de Títulos ---
+    function generateTitle(promptText) {
+      if (!promptText) return 'Nova conversa';
+      let clean = promptText.replace(/[`*#_~[\]]/g, '').trim();
+      clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+      if (clean.length > 38) {
+        clean = clean.slice(0, 36) + '...';
+      }
+      return clean;
+    }
+
+    // --- Renderização da Lista de Histórico (Recentes) ---
+    function renderSessionList(filterText = '') {
+      sessionList.innerHTML = '';
+      const query = filterText.trim().toLowerCase();
+
+      // Ordena pelas mais recentes primeiro
+      const sorted = [...sessions].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+      const filtered = query ? sorted.filter(s => s.title.toLowerCase().includes(query)) : sorted;
+
+      sessionCountBadge.textContent = sessions.length;
+
+      if (filtered.length === 0) {
+        sessionEmptyState.style.display = 'block';
+      } else {
+        sessionEmptyState.style.display = 'none';
+
+        filtered.forEach(session => {
+          const item = document.createElement('div');
+          item.className = `session-item ${session.id === currentSessionId ? 'active' : ''}`;
+          item.title = session.title;
+          item.setAttribute('data-id', session.id);
+
+          item.innerHTML = `
+            <div class="session-item-content">
+              <span class="session-item-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </span>
+              <span class="session-item-title">${escapeHtml(session.title)}</span>
+            </div>
+            <div class="session-actions">
+              <button class="session-action-btn btn-rename" title="Renomear conversa" data-rename="${session.id}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                </svg>
+              </button>
+              <button class="session-action-btn delete btn-delete" title="Excluir conversa" data-delete="${session.id}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                </svg>
+              </button>
+            </div>
+          `;
+
+          // Clique no item para abrir a conversa
+          item.addEventListener('click', (e) => {
+            if (e.target.closest('.session-action-btn')) return;
+            loadSession(session.id);
+            closeMobileSidebar();
+          });
+
+          // Renomear
+          const renameBtn = item.querySelector('.btn-rename');
+          renameBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            renameSession(session.id);
+          });
+
+          // Excluir
+          const deleteBtn = item.querySelector('.btn-delete');
+          deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteSession(session.id);
+          });
+
+          sessionList.appendChild(item);
+        });
+      }
+    }
+
+    function escapeHtml(str) {
+      return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // --- Carregar Sessão Específica ---
+    function loadSession(id) {
+      const session = sessions.find(s => s.id === id);
+      if (!session) return;
+
+      currentSessionId = id;
+      localStorage.setItem(ACTIVE_SESSION_STORAGE_KEY, id);
+
+      // Atualiza Badge do Header
+      activeChatBadge.textContent = session.title;
+      activeChatBadge.title = session.title;
+
+      // Sincroniza modelo
+      if (session.model && [...modelSelect.options].some(o => o.value === session.model)) {
+        modelSelect.value = session.model;
+        updateDockModel();
+      }
+
+      // Limpa DOM de mensagens
+      chatMessages.innerHTML = '';
+      welcomeBox.style.display = 'none';
+
+      // Reconstrói histórico de memória para LLM
+      sessionHistory = [
+        SYSTEM_PROMPT,
+        ...session.messages.map(m => ({ role: m.role, content: m.content }))
+      ];
+
+      // Renderiza as mensagens salvas
+      if (session.messages.length === 0) {
+        chatMessages.appendChild(welcomeBox);
+        welcomeBox.style.display = 'block';
+      } else {
+        session.messages.forEach(msg => {
+          appendMessage(msg.role, msg.content, !!msg.isContext);
+        });
+      }
+
+      renderSessionList(sidebarSearchInput.value);
+      scrollToBottom();
+    }
+
+    // --- Iniciar Nova Conversa (+ Nova) ---
+    function startNewChat(focusInput = true) {
+      currentSessionId = null;
+      localStorage.removeItem(ACTIVE_SESSION_STORAGE_KEY);
+
+      chatMessages.innerHTML = '';
+      chatMessages.appendChild(welcomeBox);
+      welcomeBox.style.display = 'block';
+
+      activeChatBadge.textContent = 'Nova conversa';
+      sessionHistory = [SYSTEM_PROMPT];
+
+      renderSessionList(sidebarSearchInput.value);
+      closeMobileSidebar();
+
+      if (focusInput) {
+        userInput.value = '';
+        userInput.style.height = 'auto';
+        userInput.focus();
+      }
+    }
+
+    // --- Excluir Conversa ---
+    function deleteSession(id) {
+      const idx = sessions.findIndex(s => s.id === id);
+      if (idx === -1) return;
+
+      const isCurrent = (currentSessionId === id);
+      sessions.splice(idx, 1);
+      saveSessions();
+
+      if (isCurrent) {
+        if (sessions.length > 0) {
+          loadSession(sessions[0].id);
+        } else {
+          startNewChat(false);
+        }
+      } else {
+        renderSessionList(sidebarSearchInput.value);
+      }
+    }
+
+    // --- Renomear Conversa ---
+    function renameSession(id) {
+      const session = sessions.find(s => s.id === id);
+      if (!session) return;
+
+      const newTitle = prompt('Renomear conversa:', session.title);
+      if (newTitle && newTitle.trim() && newTitle.trim() !== session.title) {
+        session.title = newTitle.trim();
+        session.updatedAt = Date.now();
+        saveSessions();
+        if (currentSessionId === id) {
+          activeChatBadge.textContent = session.title;
+        }
+        renderSessionList(sidebarSearchInput.value);
+      }
+    }
+
+    // --- Busca de Conversas no Histórico ---
+    sidebarSearchInput.addEventListener('input', () => {
+      const val = sidebarSearchInput.value;
+      btnSearchClear.style.display = val ? 'flex' : 'none';
+      renderSessionList(val);
+    });
+
+    btnSearchClear.addEventListener('click', () => {
+      sidebarSearchInput.value = '';
+      btnSearchClear.style.display = 'none';
+      renderSessionList('');
+      sidebarSearchInput.focus();
+    });
+
+    // --- Gerenciamento do Sidebar (Recolher / Expandir / Mobile) ---
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    function toggleSidebar() {
+      if (isMobile()) {
+        const isOpen = chatSidebar.classList.contains('mobile-open');
+        if (isOpen) {
+          closeMobileSidebar();
+        } else {
+          openMobileSidebar();
+        }
+      } else {
+        const isCollapsed = chatSidebar.classList.toggle('collapsed');
+        localStorage.setItem(SIDEBAR_COLLAPSED_KEY, isCollapsed ? 'true' : 'false');
+      }
+    }
+
+    function openMobileSidebar() {
+      chatSidebar.classList.add('mobile-open');
+      sidebarBackdrop.classList.add('active');
+    }
+
+    function closeMobileSidebar() {
+      chatSidebar.classList.remove('mobile-open');
+      sidebarBackdrop.classList.remove('active');
+    }
+
+    btnCollapseSidebar.addEventListener('click', toggleSidebar);
+    btnHeaderSidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+
+    btnNewChat.addEventListener('click', () => startNewChat(true));
+    btnClearChat.addEventListener('click', () => startNewChat(true));
+
+    // Restaura estado salvo do sidebar desktop
+    if (!isMobile() && localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === 'true') {
+      chatSidebar.classList.add('collapsed');
+    }
+
+    // --- Atualização de Status da Chave BYOK ---
     function updateKeyUI() {
       if (apiKey && apiKey.trim().startsWith('sk-or-')) {
         keyIndicator.classList.add('active');
@@ -800,11 +1726,18 @@
     updateKeyUI();
 
     // Modal Handlers
-    btnOpenKeyModal.addEventListener('click', () => {
+    function openKeyModal() {
       apiKeyInput.value = apiKey;
       keyModal.classList.add('open');
       apiKeyInput.focus();
+    }
+
+    btnOpenKeyModal.addEventListener('click', openKeyModal);
+    btnFooterSettings.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openKeyModal();
     });
+    userProfileCard.addEventListener('click', openKeyModal);
 
     btnCancelModal.addEventListener('click', () => {
       keyModal.classList.remove('open');
@@ -822,7 +1755,7 @@
       keyModal.classList.remove('open');
     });
 
-    // Dock Model Badge Sync
+    // Model Selector Badge Sync
     function updateDockModel() {
       const dockModelLabel = document.getElementById('dockModelLabel');
       if (dockModelLabel && modelSelect) {
@@ -830,13 +1763,23 @@
         dockModelLabel.textContent = selected ? selected.text.replace(/\(Free\)/i, '').trim() : 'Claude 3.5';
       }
     }
-    modelSelect.addEventListener('change', updateDockModel);
+    modelSelect.addEventListener('change', () => {
+      updateDockModel();
+      updateKeyUI();
+      if (currentSessionId) {
+        const sess = sessions.find(s => s.id === currentSessionId);
+        if (sess) {
+          sess.model = modelSelect.value;
+          saveSessions();
+        }
+      }
+    });
     updateDockModel();
 
-    // Auto-resize do Textarea (min 54px, max 260px)
+    // Auto-resize do Textarea (min 52px, max 260px)
     userInput.addEventListener('input', () => {
       userInput.style.height = 'auto';
-      const newHeight = Math.max(54, Math.min(userInput.scrollHeight, 260));
+      const newHeight = Math.max(52, Math.min(userInput.scrollHeight, 260));
       userInput.style.height = newHeight + 'px';
     });
 
@@ -863,20 +1806,12 @@
     if (initialPrompt && initialPrompt.trim()) {
       userInput.value = initialPrompt.trim();
       userInput.style.height = 'auto';
-      const newHeight = Math.max(54, Math.min(userInput.scrollHeight, 260));
+      const newHeight = Math.max(52, Math.min(userInput.scrollHeight, 260));
       userInput.style.height = newHeight + 'px';
       if (urlParams.get('send') === '1') {
         setTimeout(sendMessage, 400);
       }
     }
-
-    // Limpar Chat
-    btnClearChat.addEventListener('click', () => {
-      chatMessages.innerHTML = '';
-      chatMessages.appendChild(welcomeBox);
-      welcomeBox.style.display = 'block';
-      sessionHistory = [sessionHistory[0]];
-    });
 
     // Voice Recognition (Web Speech API)
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -962,12 +1897,14 @@
       return contentP;
     }
 
-    // Formatador Markdown simples
+    // Simple Markdown Formatter
     function formatMarkdown(str) {
+      if (!str) return '';
       return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
+        .replace(/### (.*?)\n/g, '<h4 style="font-size:14px; margin:10px 0 4px; color:#fff;">$1</h4>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/`([^`]+)`/g, '<code>$1</code>')
@@ -975,7 +1912,7 @@
         .replace(/\n/g, '<br>');
     }
 
-    // Fluxo Principal de Envio
+    // --- Fluxo Principal de Envio e Persistência de Sessão ---
     async function sendMessage() {
       const text = userInput.value.trim();
       if (!text || isGenerating) return;
@@ -985,14 +1922,43 @@
       btnSend.disabled = true;
       isGenerating = true;
 
+      // Se não há sessão ativa, inicializa uma nova sessão
+      if (!currentSessionId) {
+        const title = generateTitle(text);
+        const newSession = {
+          id: 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+          title: title,
+          model: modelSelect.value,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          messages: [
+            { role: 'user', content: text, isContext: false }
+          ]
+        };
+        currentSessionId = newSession.id;
+        sessions.unshift(newSession);
+        saveSessions();
+        localStorage.setItem(ACTIVE_SESSION_STORAGE_KEY, currentSessionId);
+        activeChatBadge.textContent = title;
+        renderSessionList(sidebarSearchInput.value);
+      } else {
+        const sess = sessions.find(s => s.id === currentSessionId);
+        if (sess) {
+          sess.messages.push({ role: 'user', content: text, isContext: false });
+          sess.updatedAt = Date.now();
+          saveSessions();
+          renderSessionList(sidebarSearchInput.value);
+        }
+      }
+
       // Adiciona mensagem do usuário na tela
       appendMessage('user', text);
       sessionHistory.push({ role: 'user', content: text });
 
-      // Detecta menção a clínica/sistema para demonstração de contexto
+      // Detecta consulta para demonstração de contexto
       const isClinicQuery = /cl[ií]nica|paciente|kiosk|retorno|prontu[aá]rio|consulta/i.test(text);
 
-      // Se temos Chave OpenRouter, faz chamada real
+      // Chamada OpenRouter com BYOK
       if (apiKey && apiKey.startsWith('sk-or-')) {
         const assistantPlaceholder = appendMessage('assistant', 'Pensando...', isClinicQuery);
         try {
@@ -1044,6 +2010,14 @@
 
           sessionHistory.push({ role: 'assistant', content: accumulated });
 
+          // Salva no histórico persistente
+          const sess = sessions.find(s => s.id === currentSessionId);
+          if (sess) {
+            sess.messages.push({ role: 'assistant', content: accumulated, isContext: isClinicQuery });
+            sess.updatedAt = Date.now();
+            saveSessions();
+          }
+
         } catch (err) {
           assistantPlaceholder.innerHTML = `<span style="color:#ef4444;">Erro na conexão com OpenRouter: ${err.message}. Verifique sua chave nas configurações.</span>`;
         }
@@ -1053,7 +2027,7 @@
         
         let demoResponse = '';
         if (isClinicQuery) {
-          demoResponse = `Com base nos dados sincronizados do **Clinic Kiosk**:\n\n• **Paciente em destaque:** Roberto Mendes (54 anos)\n• **Último procedimento:** Cirurgia de Menisco (12/08)\n• **Status clínico:** Retorno de 30 dias com pendência de agendamento.\n\nRecomenda-se disparar mensagem de confirmação para o WhatsApp do paciente ou agendar avaliação no painel da recepção.`;
+          demoResponse = `Com base nos dados sincronizados do **Clinic Kiosk**:\n\n• **Paciente em destaque:** Roberto Mendes (54 anos)\n• **Último procedimento:** Cirurgia de Menisco (12/08)\n• **Status clínico:** Retorno de 30 dias com pendência de confirmação.\n\nRecomenda-se disparar mensagem de confirmação para o WhatsApp do paciente ou agendar avaliação no painel da recepção.`;
         } else if (/openrouter|byok|chave/i.test(text)) {
           demoResponse = `O Nave adota a arquitetura **BYOK (Bring Your Own Key)**:\n\n1. Você usa sua própria conta na OpenRouter ou provedor direto.\n2. Não cobramos markup sobre tokens. Você paga centavos direto à IA.\n3. O Nave cobra apenas pela assinatura da plataforma e implantação das APIs dos seus sistemas.`;
         } else {
@@ -1070,6 +2044,14 @@
           } else {
             clearInterval(interval);
             sessionHistory.push({ role: 'assistant', content: demoResponse });
+
+            // Salva na sessão persistente
+            const sess = sessions.find(s => s.id === currentSessionId);
+            if (sess) {
+              sess.messages.push({ role: 'assistant', content: demoResponse, isContext: isClinicQuery });
+              sess.updatedAt = Date.now();
+              saveSessions();
+            }
           }
         }, 12);
       }
@@ -1077,6 +2059,17 @@
       btnSend.disabled = false;
       isGenerating = false;
     }
+
+    // --- Inicialização ao Carregar a Página ---
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedSessions();
+      const savedActiveId = localStorage.getItem(ACTIVE_SESSION_STORAGE_KEY);
+      if (savedActiveId && sessions.some(s => s.id === savedActiveId)) {
+        loadSession(savedActiveId);
+      } else {
+        startNewChat(false);
+      }
+    });
   </script>
 </body>
 </html>
