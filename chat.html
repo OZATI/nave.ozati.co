@@ -1531,8 +1531,7 @@
     const appLayout = document.querySelector('.app-layout');
     const chatSidebar = document.getElementById('chatSidebar');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-    const btnCollapseSidebar = document.getElementById('btnCollapseSidebar');
-    const btnHeaderSidebarToggle = document.getElementById('btnHeaderSidebarToggle');
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
     const btnNewChat = document.getElementById('btnNewChat');
     const btnClearChat = document.getElementById('btnClearChat');
     const sidebarSearchInput = document.getElementById('sidebarSearchInput');
@@ -1861,8 +1860,9 @@
       sidebarBackdrop.classList.remove('active');
     }
 
-    btnCollapseSidebar.addEventListener('click', toggleSidebar);
-    btnHeaderSidebarToggle.addEventListener('click', toggleSidebar);
+    if (btnToggleSidebar) {
+      btnToggleSidebar.addEventListener('click', toggleSidebar);
+    }
     sidebarBackdrop.addEventListener('click', closeMobileSidebar);
 
     btnNewChat.addEventListener('click', () => startNewChat(true));
