@@ -13,7 +13,7 @@ import {
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Compose, type ComposeMention, type ComposeCommand } from "@/components/ui/compose";
 import GatewayFlow from "@/components/ui/gateway-flow";
-import UnicornStudioInteractiveProjectEmbed from "@/components/ui/unicornstudio-interactive-project-embed";
+import { BloimAnimationBackground } from "@/components/ui/bloim-animation-background";
 
 const BENTO_MENTIONS: ComposeMention[] = [
   { id: "claude", label: "claude", sublabel: "Claude 3.7 Sonnet (Anthropic)" },
@@ -214,12 +214,12 @@ export function NaveBentoSection() {
         </div>
 
         {/* =========================================================================
-            CARD 4: Unicorn Studio Interactive Project Embed (4 colunas)
+            CARD 4: Bloim Animation Background (Serge Bunas / Unicorn Studio Shader)
             ========================================================================= */}
         <div className="lg:col-span-4 relative min-h-[380px] rounded-3xl overflow-hidden border border-zinc-800 bg-black shadow-2xl flex flex-col justify-between group">
-          {/* Iframe Unicorn Studio */}
+          {/* Bloim Animation Background Component */}
           <div className="absolute inset-0 z-0">
-            <UnicornStudioInteractiveProjectEmbed />
+            <BloimAnimationBackground />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/60 z-10" />
           </div>
 
@@ -227,23 +227,23 @@ export function NaveBentoSection() {
           <div className="relative z-20 p-6 flex items-center justify-between">
             <div className="flex items-center gap-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-cyan-500/20 text-xs text-cyan-300 font-mono">
               <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
-              <span>UNICORN STUDIO</span>
+              <span>BLOIM ANIMATION BACKGROUND</span>
             </div>
-            <span className="text-[10px] font-mono text-zinc-400 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10">
-              GPU Shaders
+            <span className="text-[10px] font-mono text-cyan-400 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg border border-cyan-500/20">
+              Bloom &bull; Shaders
             </span>
           </div>
 
           {/* Footer Card 4 */}
           <div className="relative z-20 p-6 bg-gradient-to-t from-black via-black/85 to-transparent">
             <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider">
-              04 • Motor Visual
+              04 • Bloim Shader FX
             </span>
             <h4 className="text-base font-bold text-white mt-0.5">
-              Campos Vetoriais &amp; Partículas
+              Bloim Animation Background
             </h4>
             <p className="text-xs text-zinc-400 mt-1">
-              Feedback háptico visual gerado em tempo real com física computacional acelerada por hardware.
+              Shader orgânico de Bloom e partículas aceleradas por WebGL GPU (Serge Bunas / Unicorn Studio) para feedback háptico visual dos agentes.
             </p>
           </div>
         </div>
