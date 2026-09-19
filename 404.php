@@ -3,7 +3,8 @@
 http_response_code(404);
 
 $accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-header('Vary: Accept');
+header('Vary: Accept, Accept-Encoding');
+header('Cache-Control: no-cache, must-revalidate');
 header('Access-Control-Allow-Origin: *');
 
 // If the agent requested markdown, return markdown 404
