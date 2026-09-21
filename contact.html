@@ -12,7 +12,7 @@
   <meta property="og:description" content="Canais de suporte oficial, atendimento a desenvolvedores e contato comercial do Nave AI e da OZATI.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=BioRhyme:wght@700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BioRhyme:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     @font-face {
@@ -38,7 +38,8 @@
       --text-muted: #a1a1aa;
       --accent-green: #10b981;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --font-serif: 'BioRhyme', Georgia, serif;
+      --font-mono: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -152,11 +153,20 @@
     .btn-chat {
       background: #fff;
       color: #000;
-      padding: 8px 16px;
-      border-radius: 6px;
+      height: 28px;
+      padding: 0 14px;
+      border-radius: 36px;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .btn-chat:hover {
+      background: #e5e5e5;
+      transform: translateY(-1px);
     }
     main {
       max-width: 860px;
@@ -241,7 +251,13 @@
         <a href="/about">Sobre</a>
         <a href="/developers">Desenvolvedores</a>
         <a href="/privacy">Privacidade</a>
-        <a href="https://chat.ozati.co" class="btn-chat">Abrir Chat &rarr;</a>
+        <a href="https://chat.ozati.co" class="btn-chat">
+          <span>Abrir Chat</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m5 12 7-7 7 7"/>
+            <path d="M12 19V5"/>
+          </svg>
+        </a>
       </div>
     </div>
   </header>

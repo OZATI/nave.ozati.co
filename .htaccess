@@ -11,6 +11,10 @@ ErrorDocument 404 /404.php
   RewriteEngine On
   RewriteBase /
 
+  # Redirecionar nav.ozati.co (ou variações sem o "e") para o domínio canônico nave.ozati.co
+  RewriteCond %{HTTP_HOST} ^nav\.ozati\.co$ [NC]
+  RewriteRule ^(.*)$ https://nave.ozati.co/$1 [R=301,L]
+
   # Allowlist and tag verified AI Agent crawlers
   RewriteCond %{HTTP_USER_AGENT} (ChatGPT-User|ClaudeBot|Claude-Web|Google-Extended|DeepSeekBot|GPTBot|PerplexityBot|anthropic-ai|OAI-SearchBot|Applebot-Extended|Meta-ExternalAgent|cohere-ai|DuckAssistBot) [NC]
   RewriteRule .* - [E=AI_AGENT:1]

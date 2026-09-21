@@ -29,9 +29,9 @@ export function initWaveBackground(canvasElement) {
     uniform vec2 u_mouse;
 
     float wave(float x, float t) {
-      float y = sin(x * 3.2 + t * 1.1) * 0.22;
-      y += sin(x * 6.5 - t * 0.7) * 0.09;
-      y += sin(x * 1.8 + t * 0.3) * 0.14;
+      float y = sin(x * 2.8 + t * 0.92) * 0.18;
+      y += sin(x * 5.4 - t * 0.62) * 0.07;
+      y += sin(x * 1.4 + t * 0.28) * 0.11;
       return y;
     }
 
@@ -41,32 +41,38 @@ export function initWaveBackground(canvasElement) {
       // Mouse interaction
       vec2 mouse = (u_mouse * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
       float mouseDist = length(uv - mouse);
-      float mouseRipple = sin(mouseDist * 8.0 - u_time * 2.5) * exp(-mouseDist * 2.2) * 0.07;
+      float mouseRipple = sin(mouseDist * 7.5 - u_time * 2.2) * exp(-mouseDist * 2.0) * 0.045;
 
-      // Chromatic Aberration: Red, Green, Blue channel displacement
-      float shift = 0.045;
+      // Subtle organic phase shift
+      float shift = 0.009;
       
-      // Red Channel (shifted forward)
-      float waveR = wave(uv.x + shift, u_time * 1.08) + mouseRipple;
+      float waveC = wave(uv.x, u_time * 0.95) + mouseRipple - 0.04;
+      float waveL = wave(uv.x + shift, u_time * 1.0) + mouseRipple - 0.04;
+      float waveR = wave(uv.x - shift, u_time * 0.9) + mouseRipple - 0.04;
+
+      float distC = abs(uv.y - waveC);
+      float distL = abs(uv.y - waveL);
       float distR = abs(uv.y - waveR);
-      float r = 0.016 / (distR + 0.012);
 
-      // Green Channel (center reference)
-      float waveG = wave(uv.x, u_time * 1.0) + mouseRipple * 0.9;
-      float distG = abs(uv.y - waveG);
-      float g = 0.016 / (distG + 0.012);
+      // Core ribbon
+      float coreC = 0.013 / (distC + 0.022);
+      float coreL = 0.009 / (distL + 0.026);
+      float coreR = 0.009 / (distR + 0.026);
 
-      // Blue Channel (shifted backward)
-      float waveB = wave(uv.x - shift, u_time * 0.92) + mouseRipple * 0.8;
-      float distB = abs(uv.y - waveB);
-      float b = 0.018 / (distB + 0.012);
+      // Ambient velvety glow
+      float glow = 0.028 / (distC * 3.0 + 0.08);
 
-      // Cyber/Aero tint (cyan & violet spectrum)
-      vec3 color = vec3(r * 1.15, g * 0.95, b * 1.55);
+      // Emerald, Cyan, Deep Indigo palette
+      vec3 emerald = vec3(0.06, 0.72, 0.51) * (coreC * 1.35 + glow * 0.85);
+      vec3 cyan = vec3(0.20, 0.85, 0.75) * (coreL * 0.95 + glow * 0.45);
+      vec3 indigo = vec3(0.22, 0.32, 0.78) * (coreR * 0.75 + glow * 0.55);
 
-      // Ambient radial darkness
-      float vignette = smoothstep(1.5, 0.15, length(uv));
-      color *= vignette;
+      vec3 color = emerald + cyan + indigo;
+
+      // Vignette & vertical falloff
+      float vignette = smoothstep(1.55, 0.25, length(uv));
+      float vFalloff = smoothstep(0.92, 0.15, abs(uv.y));
+      color *= vignette * vFalloff;
 
       gl_FragColor = vec4(color, 1.0);
     }

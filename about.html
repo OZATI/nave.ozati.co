@@ -152,11 +152,20 @@
     .btn-chat {
       background: #fff;
       color: #000;
-      padding: 8px 16px;
-      border-radius: 6px;
+      height: 28px;
+      padding: 0 14px;
+      border-radius: 36px;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .btn-chat:hover {
+      background: #e5e5e5;
+      transform: translateY(-1px);
     }
     main {
       max-width: 860px;
@@ -228,7 +237,13 @@
         <a href="/developers">Desenvolvedores</a>
         <a href="/contact">Contato</a>
         <a href="/privacy">Privacidade</a>
-        <a href="https://chat.ozati.co" class="btn-chat">Abrir Chat &rarr;</a>
+        <a href="https://chat.ozati.co" class="btn-chat">
+          <span>Abrir Chat</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m5 12 7-7 7 7"/>
+            <path d="M12 19V5"/>
+          </svg>
+        </a>
       </div>
     </div>
   </header>
