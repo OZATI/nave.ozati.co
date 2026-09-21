@@ -1281,7 +1281,9 @@
       cursor: nwse-resize;
       touch-action: none;
       border-radius: 6px;
-      transition: color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+      opacity: 0;
+      pointer-events: none;
+      transition: color 0.15s ease, background 0.15s ease, opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       padding: 0;
     }
 
@@ -1290,6 +1292,22 @@
       height: 12px;
       display: block;
       pointer-events: none;
+    }
+
+    /* Desktop: só aparece quando colocamos o mouse dentro da box do chat */
+    @media (hover: hover) and (pointer: fine) {
+      .nave-chat-input-wrapper:hover .chat-input__grip {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    /* Celular & Foco: só aparece depois de clicar para digitar (foco no chat), ou ao redimensionar / focar via teclado */
+    .nave-chat-input-wrapper:focus-within .chat-input__grip,
+    .chat-input__grip:focus-visible,
+    .chat-input__grip[data-active="true"] {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .chat-input__grip:hover,
@@ -1857,7 +1875,6 @@
       }
 
       .chat-input__grip {
-        display: flex !important;
         top: 6px;
         right: 8px;
         width: 32px;

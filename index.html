@@ -630,8 +630,8 @@
       top: 0;
       right: 0;
       z-index: 5;
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       padding: 6px 6px 0 0;
       display: flex;
       align-items: flex-start;
@@ -641,7 +641,25 @@
       color: rgba(255, 255, 255, 0.4);
       cursor: nesw-resize;
       touch-action: none;
-      transition: color 0.15s;
+      opacity: 0;
+      pointer-events: none;
+      transition: color 0.15s ease, opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease;
+    }
+
+    /* Desktop: só aparece quando colocamos o mouse dentro da box do chat */
+    @media (hover: hover) and (pointer: fine) {
+      .hero-prompt-card-wrapper:hover .chat-input__grip {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    /* Celular & Foco: só aparece depois de clicar para digitar (foco no chat), ou ao redimensionar / focar via teclado */
+    .hero-prompt-card-wrapper:focus-within .chat-input__grip,
+    .chat-input__grip:focus-visible,
+    .chat-input__grip[data-active="true"] {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .chat-input__grip:hover,
@@ -2853,6 +2871,15 @@
           e.preventDefault();
           handleHeroSubmit(e);
         }
+      });
+    }
+
+    if (heroCardRoot && heroInput) {
+      heroCardRoot.addEventListener('click', (e) => {
+        if (e.target.closest('button, select, [role="button"], .chat-input__at-chip, .chat-input__select-chip, #heroGrip')) {
+          return;
+        }
+        heroInput.focus();
       });
     }
 
