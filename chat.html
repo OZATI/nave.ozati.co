@@ -4281,6 +4281,30 @@
       } else {
         startNewChat(false);
       }
+
+      // Sincronização via URL query parameters (vindos do embed da Landing Page)
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlModel = urlParams.get('model');
+        if (urlModel) {
+          selectModel(urlModel);
+        }
+        const urlPrompt = urlParams.get('prompt');
+        const urlSend = urlParams.get('send');
+        if (urlPrompt) {
+          userInput.value = urlPrompt;
+          updateChatLayout();
+          syncSendState();
+          if (urlSend === '1') {
+            setTimeout(() => {
+              sendMessage();
+              try {
+                window.history.replaceState({}, '', window.location.pathname);
+              } catch (_) {}
+            }, 250);
+          }
+        }
+      } catch (_) {}
     });
 
     // --- BioRhyme Vector Morphing Engine para o Logo Nave ---
