@@ -106,7 +106,7 @@ export function initGatewayFlow(canvas, options = {}) {
   canvas.style.opacity = String(clamp(opacity, 0.05, 1));
 
   if (fadeEdges > 0) {
-    const mask = `radial-gradient(ellipse 80% 70% at 50% 50%, #000 35%, transparent 100%)`;
+    const mask = `radial-gradient(ellipse 92% 78% at 50% 50%, #000 45%, transparent 100%)`;
     canvas.style.webkitMaskImage = mask;
     canvas.style.maskImage = mask;
   }
@@ -117,7 +117,7 @@ export function initGatewayFlow(canvas, options = {}) {
     const n = Math.max(12, Math.round(80 * safeDensity));
     paths = Array.from({ length: n }, (_, i) => ({
       isLeft: i % 2 === 0,
-      startY: (i / n) * height * 1.4 - height * 0.2,
+      slot: (i / n) - 0.5,
       t: Math.random(),
       speed: 0.0015 + Math.random() * 0.002,
     }));
@@ -152,10 +152,10 @@ export function initGatewayFlow(canvas, options = {}) {
       const topY = t.top - c.top;
       const botY = t.bottom - c.top;
 
-      const lo = Math.max(height * 0.3, topY + TARGET_CORNER + 4);
-      const hi = Math.min(height * 0.7, botY - TARGET_CORNER - 4);
       const middle = (topY + botY) / 2;
-      cy = lo <= hi ? clamp(middle, lo, hi) : middle;
+      cy = (topY !== undefined && botY !== undefined)
+        ? clamp(middle, topY + TARGET_CORNER, botY - TARGET_CORNER)
+        : middle;
 
       if (leftEdge < MIN_SIDE_ROOM || width - rightEdge < MIN_SIDE_ROOM) {
         fxL = fxR = width / 2;
@@ -188,10 +188,12 @@ export function initGatewayFlow(canvas, options = {}) {
 
     const curveOf = (p) => {
       const run = p.isLeft ? fxL : width - fxR;
+      const fan = Math.min(height * 0.8, 360);
+      const startY = cy + p.slot * fan;
       return {
-        p0: { x: p.isLeft ? 0 : width, y: p.startY },
-        p1: { x: p.isLeft ? run * 0.5 : width - run * 0.5, y: p.startY },
-        p2: { x: p.isLeft ? run * 0.8 : width - run * 0.8, y: cy },
+        p0: { x: p.isLeft ? 0 : width, y: startY },
+        p1: { x: p.isLeft ? run * 0.48 : width - run * 0.48, y: startY },
+        p2: { x: p.isLeft ? run * 0.82 : width - run * 0.82, y: cy },
         p3: { x: p.isLeft ? fxL : fxR, y: cy },
       };
     };
@@ -211,7 +213,6 @@ export function initGatewayFlow(canvas, options = {}) {
       p.t += p.speed * safeSpeed * advance;
       if (p.t > 1) {
         p.t = 0;
-        p.startY += (Math.random() - 0.5) * 10;
       }
 
       const pos = bezier(p.t, p0, p1, p2, p3);
